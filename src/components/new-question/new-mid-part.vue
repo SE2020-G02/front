@@ -2,14 +2,12 @@
 
   <div class="mid">
     <div style="margin-left: 23%">
-      <div class="big">
+      <div class="big" v-loading="loading">
         <div class="choose-box-pos">
-          <div class="choose-box-top" v-show="show&&!staticpane[changex][changey]"
-               @mouseover="showchoose(changex, changey)">
+          <div class="choose-box-top" v-show="show&&!staticpane[changex][changey]">
             {{ changex + 1 }}-{{ changey + 1 }}
           </div>
-          <div class="choose-box" v-show="show&&!staticpane[changex][changey]"
-               @mouseover="showchoose(changex, changey)">
+          <div class="choose-box" v-show="show&&!staticpane[changex][changey]">
             <el-button id="choose-button1" @click="setpane(changex, changey, 1)">1</el-button>
             <el-button id="choose-button2" @click="setpane(changex, changey, 2)">2</el-button>
             <el-button id="choose-button3" @click="setpane(changex, changey, 3)">3</el-button>
@@ -949,7 +947,7 @@
           </div>
         </div>
         <div style="margin-left: 40%; width: 20%">
-          <el-button>
+          <el-button @click="submit">
             提交
           </el-button>
         </div>
@@ -961,8 +959,10 @@
 <script>
 export default {
   name: "new-mid-part",
+  props: ['infos'],
   data() {
     return {
+      loading: false,
       day: 0,
       hr: 0,
       min: 0,
@@ -997,6 +997,47 @@ export default {
     this.countup()
   },
   methods: {
+    submit() {
+      alert('提交成功')
+      this.loading = true;
+      var panes = "";
+      for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+          panes += this.panes[i][j].toString();
+        }
+      }
+      // alert(panes)
+      console.log(panes)
+      this.$axios
+          .post("/reward/creat", {
+            rewardInfo: {
+              rewardId: "",
+              problemId: "",
+              rewardMoney: 99,
+              rewardState: "未做出"
+            },
+            problemInfo: {
+              problemId: "",
+              problemLevel: 0,
+              problemPanes: panes,
+              problemInfo: this.infos,
+              problemSolveCount: 0
+            }
+          })
+          .then((res) => {
+            if (res.data.code === 0) {
+              alert('创建题目成功')
+              this.$router.push("reward");
+            } else {
+              alert(res.data.msg)
+            }
+          })
+          .catch((error) => {
+            alert(error.data.status);
+            console.log(error);
+          });
+      this.loading = false;
+    },
     init() {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -1044,7 +1085,7 @@ export default {
 
 <style scoped>
 
-.choose-box-pos{
+.choose-box-pos {
   position: absolute;
   margin-left: -13%;
   margin-top: 14%;

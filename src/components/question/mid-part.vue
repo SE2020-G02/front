@@ -5,23 +5,27 @@
       <span>{{ `${hr}:${min}:${sec}` }}</span>
     </div>
     <div class="big">
-      <div class="choose-box-top"
-           v-show="show&&!staticpane[changex][changey]"
-           @mouseover="showchoose(changex, changey)">
-        {{ changex + 1 }}-{{ changey + 1 }}
-      </div>
       <div class="choose-box"
            v-show="show&&!staticpane[changex][changey]"
            @mouseover="showchoose(changex, changey)">
-        <el-button id="choose-button1" @click="setpane(changex, changey, 1)">1</el-button>
-        <el-button id="choose-button2" @click="setpane(changex, changey, 2)">2</el-button>
-        <el-button id="choose-button3" @click="setpane(changex, changey, 3)">3</el-button>
-        <el-button id="choose-button4" @click="setpane(changex, changey, 4)">4</el-button>
-        <el-button id="choose-button5" @click="setpane(changex, changey, 5)">5</el-button>
-        <el-button id="choose-button6" @click="setpane(changex, changey, 6)">6</el-button>
-        <el-button id="choose-button7" @click="setpane(changex, changey, 7)">7</el-button>
-        <el-button id="choose-button8" @click="setpane(changex, changey, 8)">8</el-button>
-        <el-button id="choose-button9" @click="setpane(changex, changey, 9)">9</el-button>
+        <div
+            v-show="show&&!staticpane[changex][changey]"
+            @mouseover="showchoose(changex, changey)">
+          {{ changex + 1 }}-{{ changey + 1 }}
+        </div>
+        <div
+            v-show="show&&!staticpane[changex][changey]"
+            @mouseover="showchoose(changex, changey)">
+          <el-button id="choose-button1" @click="setpane(changex, changey, 1)">1</el-button>
+          <el-button id="choose-button2" @click="setpane(changex, changey, 2)">2</el-button>
+          <el-button id="choose-button3" @click="setpane(changex, changey, 3)">3</el-button>
+          <el-button id="choose-button4" @click="setpane(changex, changey, 4)">4</el-button>
+          <el-button id="choose-button5" @click="setpane(changex, changey, 5)">5</el-button>
+          <el-button id="choose-button6" @click="setpane(changex, changey, 6)">6</el-button>
+          <el-button id="choose-button7" @click="setpane(changex, changey, 7)">7</el-button>
+          <el-button id="choose-button8" @click="setpane(changex, changey, 8)">8</el-button>
+          <el-button id="choose-button9" @click="setpane(changex, changey, 9)">9</el-button>
+        </div>
       </div>
       <div id="mid1">
         <div style="display: inline">
@@ -951,24 +955,41 @@
           </div>
         </div>
       </div>
-    </div>
-    <div>
-      <div class="choose-button">
-        <el-button circle class="num-button" @click="setpane(changex, changey, 1)">1</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 2)">2</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 3)">3</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 4)">4</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 5)">5</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 6)">6</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 7)">7</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 8)">8</el-button>
-        <el-button circle class="num-button" @click="setpane(changex, changey, 9)">9</el-button>
-      </div>
+<!--      <div v-for="i in 9" :key="i">-->
+<!--        <div v-for="j in 3" :key="j">-->
+<!--          <div v-for="k in 3" :key="k">-->
+<!--            <div class="small"-->
+<!--                 @click="showchoose(i/3*3+j, 9*i+3*j+k-9*x-4)">-->
+<!--              <div v-show="panes[i/3*3+j][9*i+3*j+k-9*x-4]!==0">-->
+<!--                <div v-show="!staticpane[i/3*3+j][9*i+3*j+k-9*x-4]" style="color: blue">-->
+<!--                  {{ panes[i/3*3+j][9*i+3*j+k-9*x-4] }}-->
+<!--                </div>-->
+<!--                <div v-show="staticpane[i/3*3+j][9*i+3*j+k-9*x-4]">-->
+<!--                  {{ panes[i/3*3+j][9*i+3*j+k-9*x-4] }}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="submit">
         <el-button @click="submitproblem">
           提交
         </el-button>
       </div>
+    </div>
+    <div>
+      <!--      <div class="choose-button">-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 1)">1</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 2)">2</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 3)">3</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 4)">4</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 5)">5</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 6)">6</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 7)">7</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 8)">8</el-button>-->
+      <!--        <el-button circle class="num-button" @click="setpane(changex, changey, 9)">9</el-button>-->
+      <!--      </div>-->
     </div>
   </div>
 </template>
@@ -1099,6 +1120,7 @@ export default {
     },
     setpane(x, y, t) {
       // this.loading = true;
+      this.notshowchoose()
       let tmp = this.panes[x]
       if (this.panes[x][y] === t)
         tmp[y] = 0
@@ -1145,6 +1167,18 @@ export default {
 
 <style>
 
+.small {
+  round-clip: 10;
+  border: black solid 1px;
+  height: 30%;
+  width: 30%;
+  font-size: xx-large;
+  text-align: center;
+  margin-left: 3%;
+  float: left;
+  border-radius: 100px;
+}
+
 .choose-box-top {
   position: absolute;
   margin-left: -20%;
@@ -1156,11 +1190,11 @@ export default {
 
 .choose-box {
   position: absolute;
-  margin-left: -20%;
-  margin-top: 20%;
+  margin-left: -13%;
+  margin-top: 15%;
   background-color: #99a9bf;
-  width: 160px;
-  height: 160px;
+  width: 10rem;
+  height: 11rem;
 }
 
 #choose-button1 {
@@ -1246,8 +1280,8 @@ export default {
 
 
 .submit {
-  margin-left: 45%;
-  margin-top: 1%;
+  margin-left: 40%;
+  margin-bottom: 1%;
   width: 20%;
 }
 

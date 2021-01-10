@@ -25,6 +25,7 @@
             <small-problem
               :problemid="problemid"
               :isblog="1"
+              :key="problemid"
               style="width: 25rem; height: 25rem; margin-left: 5%"
             ></small-problem>
             <div class="fs-md">当前blog：{{ blogid }}</div>
@@ -146,7 +147,7 @@ export default {
   },
   methods: {
     init() {
-      this.problemid = localStorage.getItem("problemid");
+      this.problemid = localStorage.getItem('problemid');
       this.getbloginfo();
       this.getmorelist();
     },

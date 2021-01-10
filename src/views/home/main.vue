@@ -40,7 +40,7 @@
             用户<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <!-- <el-dropdown-item command="goUser">用户主页</el-dropdown-item> -->
+            <el-dropdown-item command="goUser">用户主页</el-dropdown-item>
             <el-dropdown-item command="changePwd">修改密码</el-dropdown-item>
             <el-dropdown-item command="logOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>

@@ -44,9 +44,10 @@
 
 <script>
 import MidPart from "@/components/question/mid-part";
+// import TestMidPart from "@/components/question/test-mid-part";
 export default {
   name: "question",
-  components: { MidPart },
+  components: {MidPart },
   data() {
     return {
       level: 4,

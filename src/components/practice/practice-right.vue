@@ -1,37 +1,47 @@
 <template>
-  <div>
+  <div style="margin-bottom: 75px">
     <el-button @click="loadQuestion">
       <i class="el-icon-refresh"></i>
       换一批
     </el-button>
-    <hr/>
+    <hr />
+
     <div style="overflow: hidden" v-loading="loading">
       <div class="one" v-for="item in load_num" :key="item">
-        <br v-if="item >= 6"/>
+        <br v-if="item >= 6" />
         <div class="card">
           <div align="center" class="card-img">
-            <br/>
+            <br />
             <small-problem
-                :key="problem_lst[item-1].problemId"
-                style="width: 90%; height: 210px;margin-left: 5%"
-                :problemid="problem_lst[item-1]['problemId']"
-                :change="1"></small-problem>
-            <!--          <img src="./problem.png" class="card-img-top img" alt="Image" />-->
+              :key="problem_lst[item - 1].problemId"
+              style="width: 90%; height: 210px; margin-left: 5%"
+              :problemid="problem_lst[item - 1]['problemId']"
+            ></small-problem>
           </div>
           <div class="card-body">
             <div>
-              <h5 class="card-title problemID-text">{{ problem_lst[item - 1]['problemId'] }}</h5>
-              <p class="card-text passed-text">通过数：{{ passed[item] }}</p>
+              <h5 class="card-title problemID-text">
+                {{ problem_lst[item - 1]["problemId"] }}
+              </h5>
+              <p class="card-text passed-text">
+                通过数：{{ problem_lst[item - 1].problemSolveCount }}
+              </p>
             </div>
             <div class="practice-goto-botton">
-              <el-button type="primary" round @click="goQuestion(problem_lst[item-1]['problemId'])">
+              <el-button
+                type="primary"
+                round
+                @click="goQuestion(problem_lst[item - 1]['problemId'])"
+              >
                 就做TA
               </el-button>
             </div>
           </div>
         </div>
       </div>
-      <br v-if="item >= load_num"/>
+      <!-- <div v-if="item >= 10" style="margin-bottom: 22%">
+        <br />
+      </div> -->
     </div>
   </div>
 </template>
@@ -41,8 +51,8 @@ import SmallProblem from "@/components/question/small-problem";
 
 export default {
   name: "practice-right",
-  components: {SmallProblem},
-  props: ['problem_lst', 'level'],
+  components: { SmallProblem },
+  props: ["problem_lst", "level"],
   data() {
     return {
       passed: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -52,48 +62,50 @@ export default {
   },
   methods: {
     goQuestion(problemid) {
-      localStorage.setItem('problemid', problemid)
-      alert(localStorage.getItem('problemid'))
-      localStorage.setItem('ispractice', '1')
+      localStorage.setItem("problemid", problemid);
+      alert(localStorage.getItem("problemid"));
+      localStorage.setItem("ispractice", "1");
       this.$router.push("question");
     },
     loadQuestion() {
-      this.$axios.post("/problem/page", {
-        accountId: localStorage.getItem('userid'),
-        problemLevel: this.level,
-        problemCount: this.load_num
-      })
-          .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
+      this.$axios
+        .post("/problem/page", {
+          accountId: localStorage.getItem("userid"),
+          problemLevel: this.level,
+          problemCount: this.load_num,
+        })
+        .then((res) => {
+          // alert("发送成功");
+          // console.log(res.data);
 
-            if (res.data.code === 0) {
-              this.problem_lst = res.data.data.problemInfoList
-              for (let i = 0; i < this.load_num; i++) {
-                this.getsolve(this.problem_lst[i].problemId, i)
-              }
-              // console.log(this.problem_lst[2].problemId)
-            }
-            // alert(res.data.msg);
-          })
+          if (res.data.code === 0) {
+            this.problem_lst = res.data.data.problemInfoList;
+            // for (let i = 0; i < this.load_num; i++)
+            //   this.getsolve(this.problem_lst[i].problemId, i);
+
+            // console.log(this.problem_lst[2].problemId)
+          }
+          // alert(res.data.msg);
+        });
     },
     getsolve(problemid, i) {
-      this.loading = true
-      this.$axios.post("/problem/message", {
-        problemId: problemid
-      })
-          .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
+      this.loading = true;
+      this.$axios
+        .post("/problem/message", {
+          problemId: problemid,
+        })
+        .then((res) => {
+          // alert("发送成功");
+          // console.log(res.data);
 
-            if (res.data.code === 0) {
-              this.passed[i] = res.data.data.problemInfoList.problemSolveCount
-              // console.log(this.problem_lst[2].problemId)
-            }
-            // alert(res.data.msg);
-          })
-      this.loading = false
-    }
+          if (res.data.code === 0) {
+            this.passed[i] = res.data.data.problemInfoList.problemSolveCount;
+            // console.log(this.problem_lst[2].problemId)
+          }
+          // alert(res.data.msg);
+        });
+      this.loading = false;
+    },
   },
 };
 </script>
@@ -122,13 +134,9 @@ export default {
 
 .one {
   width: 20%;
-
   height: auto;
-
   /*border: 1px solid #ccc;*/
-
   float: left;
-
   box-sizing: border-box;
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="roombg">
-    <div class="room" style="width：90%">
+    <div class="room" style="width: 90%">
       <!-- <el-row>
       <el-col :span="5">
         <div style="height: 700px; border-right: #999999 solid 1px">
@@ -127,6 +127,33 @@ export default {
     this.init();
   },
   methods: {
+    open() {
+      var msg = "确定退出？";
+      var username = localStorage.getItem("username");
+      if (username === localStorage.getItem("creator")) {
+        msg = "房主退出即视为解散房间，确认退出？";
+      }
+      this.$confirm(msg, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "退出成功!",
+          });
+          this.isin = 0;
+          this.quit();
+          this.$router.push("contest");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
+    },
     init() {
       this.getparticipants();
       this.countdown();
@@ -136,7 +163,7 @@ export default {
         this.joinin();
         this.isin = 1;
       } else if (this.start) {
-        this.startgame();
+        // this.startgame();
         localStorage.setItem("ispractice", "0");
       } else {
         this.quit();
@@ -148,13 +175,10 @@ export default {
         this.isin = 1;
         this.joinin();
       } else if (this.bottontype === "退出比赛") {
-        var username = localStorage.getItem("username");
-        if (username === localStorage.getItem("creator")) {
-          alert("房主退出视为解散房间，是否继续");
-        }
-        this.isin = 0;
-        this.quit();
-        this.$router.push("contest");
+        this.open();
+      } else if (this.bottontype === "开始答题"){
+        this.startgame();
+        localStorage.setItem("ispractice", "0");
       }
     },
     joinin() {
@@ -168,7 +192,7 @@ export default {
           this.getparticipants();
         })
         .catch((error) => {
-          alert("服务器错误roomlist");
+          alert("服务器错误joinin");
           console.log(error);
         });
     },
@@ -178,12 +202,11 @@ export default {
           roomId: this.roomid,
           accountID: this.userid,
         })
-        .then((res) => {
-          alert(res.data.msg);
+        .then(() => {
           this.getparticipants();
         })
         .catch((error) => {
-          alert("服务器错误roomlist");
+          alert("服务器错误quit");
           console.log(error);
         });
     },
@@ -215,7 +238,7 @@ export default {
           if (this.isin === 0) this.bottontype = "加入比赛";
         })
         .catch((error) => {
-          alert("服务器错误roomlist");
+          alert("服务器错误getparticipants");
           console.log(error);
         });
     },
@@ -229,6 +252,7 @@ export default {
         this.min = "00";
         this.sec = "00";
         this.start = 1;
+        this.bottontype="开始答题"
       } else {
         let day = parseInt(msec / 1000 / 60 / 60 / 24);
         let hr = parseInt(msec / 1000 / 60 / 60);
