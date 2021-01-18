@@ -37,17 +37,31 @@
         忘记密码
       </div>
     </div>
+    <div style="margin-top: 10%" @click="goIPC">浙ICP备2020043880号</div>
   </div>
 </template>
 
 <script>
-// import { mapMutations } from "vuex";
-
 export default {
   data() {
     return { buttonSize: "large", loginForm: { username: "", pwd: "" } };
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
+    goIPC() {
+      window.location.href = "http://beian.miit.gov.cn/";
+    },
     goRegister() {
       this.$router.push("register");
     },
@@ -55,11 +69,9 @@ export default {
       this.$router.push("forgetpwd");
     },
 
-    // ...mapMutations(["changeLogin"]),
     async login() {
-      // let _this = this;
       if (this.loginForm.username === "" || this.loginForm.pwd === "") {
-        alert("用户名或密码不能为空");
+        this.alertmsg('用户名或密码不能为空', 'warning')
       } else {
         this.$axios
           .post("/account/login", {
@@ -67,9 +79,6 @@ export default {
             accountPwd: this.loginForm.pwd,
           })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-
             if (res.data.code === 0) {
               localStorage.setItem(
                 "userid",
@@ -79,24 +88,14 @@ export default {
                 "username",
                 res.data.data.accountInfo.accountNickname
               );
-              // alert(
-              //   localStorage.getItem("userid") +
-              //     localStorage.getItem("username")
-              // );
-
-              // localStorage.removeItem("userid");
-              // localStorage.setItem("userid", 555);
-              // alert(localStorage.getItem("userid"));
-              // _this.userToken = "Bearer " + res.data.data.body.token;
-              // 将用户token保存到vuex中
-              // _this.changeLogin({ Authorization: _this.userToken });
+              this.alertmsg('登录成功', 'success')
               this.$router.push("home");
+            } else {
+              this.alertmsg('用户名与密码不匹配', 'warning')
             }
-            alert(res.data.msg);
           })
-          .catch((error) => {
-            alert("服务器错误");
-            console.log(error);
+          .catch(() => {
+            this.alerterror()
           });
       }
     },

@@ -43,11 +43,21 @@ export default {
     this.loadQuestion();
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     changeLevel(lev) {
       this.level = lev;
       localStorage.setItem("problemlevel", lev);
-      // console.log(localStorage.getItem('problemlevel'))
-      // console.log(this.level)
       this.loadQuestion();
     },
     loadQuestion() {
@@ -59,15 +69,11 @@ export default {
             problemCount: 10,
           })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-
             if (res.data.code === 0) {
               this.problem_lst = res.data.data.problemInfoList;
-              // console.log(this.problem_lst[2].problemId)
             }
-            // alert(res.data.msg);
-          });
+          })
+      .catch(()=>this.alerterror())
       this.loading = false;
     },
   },

@@ -54,19 +54,29 @@ export default {
   },
 
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     changePwd() {
-      //   alert("修改密码");
-
-      if (this.changeForm.old === "") alert("旧密码不能为空");
-      else if (this.changeForm.new === "") alert("请输入新密码");
+      if (this.changeForm.old === "") this.alertmsg('旧密码不能为空', 'warning')
+      else if (this.changeForm.new === "") this.alertmsg('请输入新密码', 'warning')
       else if (
         this.changeForm.new.length < 6 ||
         this.changeForm.new.length > 20
       )
-        alert("请输入6-20位新密码");
-      else if (this.changeForm.new2 === "") alert("请再次输入新密码");
-      else if (this.changeForm.new != this.changeForm.new2)
-        alert("两次输入密码不一致");
+      this.alertmsg('请输入6-20位新密码', 'warning')
+      else if (this.changeForm.new2 === "") this.alertmsg('请再次输入新密码')
+      else if (this.changeForm.new !== this.changeForm.new2)
+      this.alertmsg('两次输入密码不一致', 'warning')
       else {
         this.$axios
           .post("/account/updatePwd", {
@@ -75,15 +85,11 @@ export default {
             accountNewPwd: this.changeForm.new,
           })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-            alert(res.data.msg);
             localStorage.clear;
             if (res.data.code === 0) this.$router.push("/");
           })
-          .catch((error) => {
-            alert("服务器错误");
-            console.log(error);
+          .catch(() => {
+            this.alerterror()
           });
       }
     },

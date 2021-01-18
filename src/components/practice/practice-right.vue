@@ -61,10 +61,23 @@ export default {
     };
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     goQuestion(problemid) {
       localStorage.setItem("problemid", problemid);
-      alert(localStorage.getItem("problemid"));
       localStorage.setItem("ispractice", "1");
+      localStorage.setItem("isreward", '0');
+      localStorage.setItem("isrank", '0');
       this.$router.push("question");
     },
     loadQuestion() {
@@ -75,36 +88,14 @@ export default {
           problemCount: this.load_num,
         })
         .then((res) => {
-          // alert("发送成功");
-          // console.log(res.data);
-
           if (res.data.code === 0) {
             this.problem_lst = res.data.data.problemInfoList;
-            // for (let i = 0; i < this.load_num; i++)
-            //   this.getsolve(this.problem_lst[i].problemId, i);
-
-            // console.log(this.problem_lst[2].problemId)
           }
-          // alert(res.data.msg);
-        });
-    },
-    getsolve(problemid, i) {
-      this.loading = true;
-      this.$axios
-        .post("/problem/message", {
-          problemId: problemid,
         })
-        .then((res) => {
-          // alert("发送成功");
-          // console.log(res.data);
-
-          if (res.data.code === 0) {
-            this.passed[i] = res.data.data.problemInfoList.problemSolveCount;
-            // console.log(this.problem_lst[2].problemId)
-          }
-          // alert(res.data.msg);
-        });
-      this.loading = false;
+      .catch(()=>{
+        this.alerterror()
+      })
+      ;
     },
   },
 };

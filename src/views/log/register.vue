@@ -63,12 +63,23 @@ export default {
     };
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     goLogin() {
       this.$router.push("/");
     },
 
     async register() {
-      // alert(this.registerForm.pwd != this.registerForm.pwd2);
       var reg = /^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
 
       if (this.registerForm.username === "") alert("用户名不能为空");
@@ -81,7 +92,7 @@ export default {
       )
         alert("请输入6-20位密码");
       else if (this.registerForm.pwd2 === "") alert("请再次输入密码");
-      else if (this.registerForm.pwd != this.registerForm.pwd2)
+      else if (this.registerForm.pwd !== this.registerForm.pwd2)
         alert("两次输入密码不一致");
       else {
         this.$axios
@@ -91,14 +102,11 @@ export default {
             accountPwd: this.registerForm.pwd,
           })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-            alert(res.data.msg);
             if (res.data.code === 0) this.$router.push("/");
+            else this.alertmsg(res.data.msg, 'warning')
           })
-          .catch((error) => {
-            alert("服务器错误");
-            console.log(error);
+          .catch(() => {
+            this.alerterror()
           });
       }
     },

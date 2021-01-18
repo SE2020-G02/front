@@ -43,24 +43,32 @@ export default {
   },
 
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     async pwdreset() {
       if (this.forgetForm.username === "") alert("用户名不能为空");
       else if (this.forgetForm.phone === "") alert("手机号不能为空");
       else {
         this.$axios
-          .post("", {
+          .post("/account/reset", {
             accountNickname: this.forgetForm.username,
             accountPhone: this.forgetForm.phone,
           })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-            alert(res.data.msg);
             if (res.data.code === 0) this.$router.push("/");
           })
-          .catch((error) => {
-            alert("服务器错误");
-            console.log(error);
+          .catch(() => {
+            this.alerterror()
           });
       }
     },

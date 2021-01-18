@@ -29,7 +29,7 @@
                   type="primary"
                   round
                   class="todo-button"
-                  @click="goQuestion(reward_lst[item - 1]['problemId'])"
+                  @click="goQuestion(reward_lst[item - 1]['problemId'], reward_lst[item-1]['rewardId'])"
               >就做TA
               </el-button>
             </div>
@@ -54,9 +54,24 @@ export default {
     return {};
   },
   methods: {
-    goQuestion(problemid) {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
+    goQuestion(problemid, rewardid) {
       localStorage.setItem("problemid", problemid);
-      alert(localStorage.getItem("problemid"));
+      localStorage.setItem("rewardid", rewardid);
+      localStorage.setItem("isreward", '1');
+      localStorage.setItem("ispractice", '0');
+      localStorage.setItem("isrank", '0');
       this.$router.push("question");
     },
     async loadSolvedQuestion() {
@@ -66,15 +81,11 @@ export default {
             rewardCount: 10,
           })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-
             if (res.data.code === 0) {
               this.reward_lst = res.data.data.rewardInfoList;
-              // console.log(this)
             }
-            // alert(res.data.msg);
-          });
+          })
+      .catch(()=>this.alerterror())
     },
   },
 };

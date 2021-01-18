@@ -17,12 +17,12 @@
           </div>
           <div align="center" style="margin: 80px; color: #0079fe">
             <!-- <div @click="feedback">反馈</div> -->
-            <div @click="readblog">查看题解</div>
+            <div v-show="ispractice!=='0'" @click="readblog">查看题解</div>
           </div>
         </div>
       </el-col>
       <el-col :span="14">
-        <mid-part></mid-part>
+        <mid-part style="margin-left: -7%"></mid-part>
       </el-col>
       <el-col :span="5">
         <div class="right-part">
@@ -30,7 +30,7 @@
           <div class="subtitle">已通过人数：{{ solved }}</div>
           <hr class="hr-line" />
           <el-table :data="solved_list" stripe class="hr-line">
-            <el-table-column prop="rank" label="排名"> </el-table-column>
+            <el-table-column prop="rankNum" label="排名"> </el-table-column>
             <el-table-column prop="accountNickname" label="用户">
             </el-table-column>
             <el-table-column prop="solveCostTime" label="耗时">
@@ -50,6 +50,7 @@ export default {
   components: {MidPart },
   data() {
     return {
+      ispractice: localStorage.getItem('ispractice'),
       level: 4,
       problem_info: "here is problem information",
       solved: 150,
@@ -57,8 +58,10 @@ export default {
       solved_list: [
         {
           accountNickname: "1",
-          rank: 1,
           solveCostTime: "16: 11",
+          roomId:localStorage.getItem('roomid'),
+          percentage:100,
+          rankNum: 1,
         },
       ],
     };
@@ -67,6 +70,18 @@ export default {
     this.init();
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     init() {
       this.problemid = localStorage.getItem("problemid");
       this.getinfo();
@@ -82,33 +97,62 @@ export default {
           problemId: this.problemid,
         })
         .then((res) => {
-          // alert("发送成功");
-          // console.log(res.data);
-
           if (res.data.code === 0) {
             this.level = res.data.data.problemInfo.problemLevel;
             this.problem_info = res.data.data.problemInfo.problemInfo;
-            // console.log(this.problem_lst[2].problemId)
           }
-          // alert(res.data.msg);
-        });
-    },
-    async getsolvelist() {
-      this.$axios
-        .post("/solve/rank", {
-          problemId: this.problemid,
         })
-        .then((res) => {
-          // alert("获取通过列表成功");
-          // console.log(res.data);
-
-          if (res.data.code === 0) {
-            this.solved = res.data.data.solveCount;
-            this.solved_list = res.data.data.solveRankInfoList;
-            console.log(this.solved_list);
-          }
-          // alert(res.data.msg);
-        });
+      .catch(()=>this.alerterror())
+    },
+    getsolvelist: function () {
+      if (localStorage.getItem('ispractice')==='1'){
+        this.$axios
+            .post("/solve/rank", {
+              problemId: this.problemid
+            })
+            .then((res) => {
+              if (res.data.code === 0) {
+                this.solved = res.data.data.solveCount;
+                this.solved_list = res.data.data.solveRankInfoList;
+                for(var i=0; i<this.solved_list.length; i++){
+                  this.solved_list[i].rankNum=i+1;
+                }
+              }
+            });
+      } else {
+        this.$axios
+            .post("/roomMember/getMessage", {
+              roomId: localStorage.getItem('roomid')
+            })
+            .then((res) => {
+              if (res.data.code === 0) {
+                this.solved = res.data.data.roomAccountCount;
+                this.solved_list = res.data.data.roomMemberInfoList;
+                for(var i=0; i<this.solved_list.length; i++){
+                  this.solved_list[i].rankNum=i+1;
+                  this.solved_list[i].solveCostTime=this.solved_list[i].timecost
+                  var t = this.solved_list[i].solveCostTime
+                  var h = parseInt(t / 3600);
+                  t %= 3600;
+                  var m = parseInt(t / 60);
+                  t %= 60;
+                  h = h.toString()
+                  m = m.toString()
+                  t = t.toString()
+                  if (h < 10) h = '0' + h;
+                  if (m < 10) m = '0' + m;
+                  if (t < 10) t = '0' + t;
+                  this.solved_list[i].solveCostTime = h + ':' + m + ':' + t;
+                }
+              }
+            });
+        let self=this
+        if (self && !self._isDestroyed) {
+          this.dispatch = setTimeout(() => {
+            self.getsolvelist()
+          }, 10000)
+        }
+      }
     },
   },
 };

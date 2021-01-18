@@ -123,7 +123,7 @@ export default {
       author: "渣男12138",
       signature:
         "这个人什么也没说，这个人什么也没说，这个人什么也没说，这个人什么也没说",
-      problemid: 12769,
+      problemid: localStorage.getItem('problemid'),
       blogid: "0000",
       blog_info: "这里是题解正文，这里是题解正文，这里是题解正文",
       // comment_num: 158,
@@ -146,6 +146,18 @@ export default {
     this.init();
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     init() {
       this.problemid = localStorage.getItem('problemid');
       this.getbloginfo();
@@ -156,21 +168,18 @@ export default {
         .post("/blogs/creat", {
           accountId: localStorage.getItem("userid"),
           problemId: this.problemid,
-          // accountNickname: localStorage.getItem("username"),
           blogMessage: this.newbloginfo,
         })
         .then((res) => {
           if (res.data.code === 0) {
             this.blogid = res.data.data.blogId;
-            // alert(this.blogid);
             localStorage.setItem("blogid", res.data.data.blogId);
-            alert("提交成功");
+            this.alertmsg('提交成功', 'success')
             this.init();
           }
         })
-        .catch((error) => {
-          alert("服务器错误submitblog");
-          console.log(error);
+        .catch(() => {
+          this.alerterror()
         });
 
       this.visible = false;
@@ -182,15 +191,13 @@ export default {
           blogId: this.blogid,
         })
         .then((res) => {
-          // alert("problemid: " + this.problemid + "   blogid: " + this.blogid);
-          if (res.data.code == 1) {
+          if (res.data.code === 1) {
             this.author = "none";
             this.signature = "none";
             this.blogid = "none";
             this.blog_info = "暂无信息：当前还没有人为这道题目编写题解";
             this.update_time = "无";
           } else {
-            // alert("bloginfo code: 0");
             this.author = res.data.data.accountPublicInfo.accountNickname;
             this.signature = res.data.data.accountPublicInfo.accountSignature;
             this.blogid = res.data.data.blogInfo.blogId;
@@ -198,9 +205,8 @@ export default {
             this.update_time = res.data.data.blogInfo.blogUpdateTime;
           }
         })
-        .catch((error) => {
-          alert("服务器错误getbloginfo");
-          console.log(error);
+        .catch(() => {
+          this.alerterror()
         });
     },
     getmorelist() {
@@ -210,7 +216,6 @@ export default {
         })
         .then((res) => {
           if (res.data.code === 0) {
-            // alert("获取通过列表成功");
             this.more_blog_list = res.data.data.blogsInfoList;
             if (this.more_blog_list == null) {
               this.more_blog_num = 0;
@@ -219,13 +224,11 @@ export default {
             }
           }
         })
-        .catch((error) => {
-          alert("服务器错误getmorelist");
-          console.log(error);
+        .catch(() => {
+          this.alerterror()
         });
     },
     readotherblog(theblogid) {
-      // alert(theblogid);
       this.blogid = theblogid;
       localStorage.setItem("blogid", theblogid);
       this.init();

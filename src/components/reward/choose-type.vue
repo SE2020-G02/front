@@ -41,9 +41,21 @@ export default {
     }
   },
   mounted() {
-    this.loadQuestion('已做出')
+    this.loadQuestion('未做出')
   },
   methods:{
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     async loadQuestion(s){
       this.$axios.
       post("/reward/page", {
@@ -51,16 +63,11 @@ export default {
         rewardCount: 15
       })
           .then((res) => {
-            // alert("发送成功");
-            // console.log(res.data);
-
             if (res.data.code === 0) {
               this.reward_lst=res.data.data.rewardInfoList
-              // alert(this.reward_lst[0].problemId);
-              // console.log(this.problem_lst[2].problemId)
             }
-            // alert(res.data.msg);
           })
+      .catch(()=>this.alerterror())
     },
   }
 };

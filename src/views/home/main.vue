@@ -7,13 +7,13 @@
         src="../../assets/logo.png"
         @click="goHome"
       />
-      <!-- <input
-        aria-disabled="true"
-        class="searchinput ml-4 mr-2 fs-sm text-white"
-        style="height: 24px"
-      /> -->
-      <div class="ml-4 mr-2" style="width：100px">
-        <el-input disabled size="mini" placeholder="输入题号搜索" />
+<!--      <input-->
+<!--        aria-disabled="true"-->
+<!--        class="searchinput ml-4 mr-2 fs-sm text-white"-->
+<!--        style="height: 24px"-->
+<!--      />-->
+      <div class="ml-4 mr-2" style="width: 150px">
+        <el-input size="mini" placeholder="输入题号搜索" v-model="search" />
       </div>
 
       <div
@@ -36,11 +36,11 @@
 
       <div class="user text-white fs-l">
         <el-dropdown @command="userabout">
-          <span class="el-dropdown-link">
-            用户<i class="el-icon-arrow-down el-icon--right"></i>
+          <span class="el-dropdown-link ml-5">
+            你好，{{username}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="goUser">用户主页</el-dropdown-item>
+<!--            <el-dropdown-item command="goUser">用户主页</el-dropdown-item>-->
             <el-dropdown-item command="changePwd">修改密码</el-dropdown-item>
             <el-dropdown-item command="logOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -67,6 +67,8 @@
 export default {
   data() {
     return {
+      search: '',
+      username: localStorage.getItem('username'),
       headerData: [
         {
           code: 1,
@@ -89,32 +91,57 @@ export default {
           path: "practice",
         },
       ],
-
-      // other: [
-      //   {
-      //     code: 1,
-      //     title: "登录",
-      //     path: "login",
-      //   },
-      //   {
-      //     code: 2,
-      //     title: "注册",
-      //     path: "register",
-      //   },
-      //   {
-      //     code: 3,
-      //     title: "管理员",
-      //     path: "admin",
-      //   },
-      // ],
     };
   },
-
+  created: function() {
+    var _this = this;
+    document.onkeydown = function() {   //按下回车提交
+      let key = window.event.keyCode;
+      //事件中keycode=13为回车事件
+      if (key === 13) {
+        _this.append();
+      }
+    };
+  },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
+    append: function() {
+      if(this.search.length===1) this.search='000'+this.search;
+      if(this.search.length===2) this.search='00'+this.search;
+      if(this.search.length===3) this.search='0'+this.search;
+      if(this.search!==''){
+        this.$axios.post("/problem/message", {
+          problemId: this.search
+        })
+            .then((res) => {
+              if (res.data.code === 0) {
+                localStorage.setItem('problemid', this.search)
+                localStorage.setItem('ispractice', '1')
+                if(this.$route.path==='/question') {
+                  location.reload();
+                } else {
+                  this.$router.push("question");
+                }
+              }
+            })
+            .catch(() => {
+              this.alerterror()
+            });
+      }
+      this.search=''
+    },
     onClick(item) {
-      // if (item.code == 1) {
-      //   localStorage.setItem("roomlevel", 1);
-      // }
       this.$router.push(item.path);
     },
     goHome() {
@@ -123,18 +150,17 @@ export default {
 
     userabout(command) {
       if (localStorage.getItem("userid") == null) {
-        alert("请先登录！");
+        this.alertmsg('请先登录！', 'warning')
         this.$router.push("/");
       } else {
-        if (command == "goUser") {
+        if (command === "goUser") {
           this.$router.push("user");
-          alert(localStorage.getItem("userid"));
-        } else if (command == "changePwd") {
+          this.alertmsg(localStorage.getItem('userid'), 'success');
+        } else if (command === "changePwd") {
           this.$router.push("changepwd");
-        } else if (command == "logOut") {
+        } else if (command === "logOut") {
           localStorage.clear();
-          // alert(localStorage.getItem("userid"));
-          alert("退出成功！");
+          this.alertmsg('退出成功！', 'success')
           this.$router.push("/");
         }
       }

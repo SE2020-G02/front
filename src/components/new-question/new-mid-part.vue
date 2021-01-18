@@ -1,13 +1,14 @@
 <template>
 
   <div class="mid">
-    <div style="margin-left: 23%">
-      <div class="big" v-loading="loading">
-        <div class="choose-box-pos">
-          <div class="choose-box-top" v-show="show&&!staticpane[changex][changey]">
-            {{ changex + 1 }}-{{ changey + 1 }}
-          </div>
-          <div class="choose-box" v-show="show&&!staticpane[changex][changey]">
+    <div>
+      <div class="big" @click="showbox">
+        <div class="choose-box"
+             :style="{left: tranLeft, top: tranTop}" v-show="show">
+<!--          <div class="choose-box-top" v-show="show&&!staticpane[changex][changey]">-->
+<!--            {{ changex + 1 }}-{{ changey + 1 }}-->
+<!--          </div>-->
+          <div>
             <el-button id="choose-button1" @click="setpane(changex, changey, 1)">1</el-button>
             <el-button id="choose-button2" @click="setpane(changex, changey, 2)">2</el-button>
             <el-button id="choose-button3" @click="setpane(changex, changey, 3)">3</el-button>
@@ -23,66 +24,66 @@
           <div style="display: inline">
             <div id="small00"
                  @click="showchoose(0, 0)">
-              <div v-show="panes[0][0]!==0">
-                <div v-show="!staticpane[0][0]" style="color: blue">
+              <div v-show="panes[0][0]!==0" class="small">
+                <div v-show="!staticpane[0][0]" class="smallblue">
                   {{ panes[0][0] }}
                 </div>
-                <div v-show="staticpane[0][0]">
+                <div v-show="staticpane[0][0]" class="small">
                   {{ panes[0][0] }}
                 </div>
               </div>
             </div>
             <div id="small01"
                  @click="showchoose(0, 1)">
-              <div v-show="panes[0][1]!==0">
-                <div v-show="!staticpane[0][1]" style="color: blue">
+              <div v-show="panes[0][1]!==0" class="small">
+                <div v-show="!staticpane[0][1]" class="smallblue">
                   {{ panes[0][1] }}
                 </div>
-                <div v-show="staticpane[0][1]">
+                <div v-show="staticpane[0][1]" class="small">
                   {{ panes[0][1] }}
                 </div>
               </div>
             </div>
             <div id="small02"
                  @click="showchoose(0, 2)">
-              <div v-show="panes[0][2]!==0">
-                <div v-show="!staticpane[0][2]" style="color: blue">
+              <div v-show="panes[0][2]!==0" class="small">
+                <div v-show="!staticpane[0][2]" class="smallblue">
                   {{ panes[0][2] }}
                 </div>
-                <div v-show="staticpane[0][2]">
+                <div v-show="staticpane[0][2]" class="small">
                   {{ panes[0][2] }}
                 </div>
               </div>
             </div>
             <div id="small10"
                  @click="showchoose(1, 0)">
-              <div v-show="panes[1][0]!==0">
-                <div v-show="!staticpane[1][0]" style="color: blue">
+              <div v-show="panes[1][0]!==0" class="small">
+                <div v-show="!staticpane[1][0]" class="smallblue">
                   {{ panes[1][0] }}
                 </div>
-                <div v-show="staticpane[1][0]">
+                <div v-show="staticpane[1][0]" class="small">
                   {{ panes[1][0] }}
                 </div>
               </div>
             </div>
             <div id="small11"
                  @click="showchoose(1, 1)">
-              <div v-show="panes[1][1]!==0">
-                <div v-show="!staticpane[1][1]" style="color: blue">
+              <div v-show="panes[1][1]!==0" class="small">
+                <div v-show="!staticpane[1][1]" class="smallblue">
                   {{ panes[1][1] }}
                 </div>
-                <div v-show="staticpane[1][1]">
+                <div v-show="staticpane[1][1]" class="small">
                   {{ panes[1][1] }}
                 </div>
               </div>
             </div>
             <div id="small12"
                  @click="showchoose(1, 2)">
-              <div v-show="panes[1][2]!==0">
-                <div v-show="!staticpane[1][2]" style="color: blue">
+              <div v-show="panes[1][2]!==0" class="small">
+                <div v-show="!staticpane[1][2]" class="smallblue">
                   {{ panes[1][2] }}
                 </div>
-                <div v-show="staticpane[1][2]">
+                <div v-show="staticpane[1][2]" class="small">
                   {{ panes[1][2] }}
                 </div>
               </div>
@@ -90,7 +91,7 @@
             <div id="small20"
                  @click="showchoose(2, 0)">
               <div v-show="panes[2][0]!==0">
-                <div v-show="!staticpane[2][0]" style="color: blue">
+                <div v-show="!staticpane[2][0]" class="smallblue">
                   {{ panes[2][0] }}
                 </div>
                 <div v-show="staticpane[2][0]">
@@ -100,22 +101,22 @@
             </div>
             <div id="small21"
                  @click="showchoose(2, 1)">
-              <div v-show="panes[2][1]!==0">
-                <div v-show="!staticpane[2][1]" style="color: blue">
+              <div v-show="panes[2][1]!==0" class="small">
+                <div v-show="!staticpane[2][1]" class="smallblue">
                   {{ panes[2][1] }}
                 </div>
-                <div v-show="staticpane[2][1]">
+                <div v-show="staticpane[2][1]" class="small">
                   {{ panes[2][1] }}
                 </div>
               </div>
             </div>
             <div id="small22"
                  @click="showchoose(2, 2)">
-              <div v-show="panes[2][2]!==0">
-                <div v-show="!staticpane[2][2]" style="color: blue">
+              <div v-show="panes[2][2]!==0" class="small">
+                <div v-show="!staticpane[2][2]" class="smallblue">
                   {{ panes[2][2] }}
                 </div>
-                <div v-show="staticpane[2][2]">
+                <div v-show="staticpane[2][2]" class="small">
                   {{ panes[2][2] }}
                 </div>
               </div>
@@ -126,99 +127,99 @@
           <div style="display: inline">
             <div id="small03"
                  @click="showchoose(0, 3)">
-              <div v-show="panes[0][3]!==0">
-                <div v-show="!staticpane[0][3]" style="color: blue">
+              <div v-show="panes[0][3]!==0" class="small">
+                <div v-show="!staticpane[0][3]" class="smallblue">
                   {{ panes[0][3] }}
                 </div>
-                <div v-show="staticpane[0][3]">
+                <div v-show="staticpane[0][3]" class="small">
                   {{ panes[0][3] }}
                 </div>
               </div>
             </div>
             <div id="small04"
                  @click="showchoose(0, 4)">
-              <div v-show="panes[0][4]!==0">
-                <div v-show="!staticpane[0][4]" style="color: blue">
+              <div v-show="panes[0][4]!==0" class="small">
+                <div v-show="!staticpane[0][4]" class="smallblue">
                   {{ panes[0][4] }}
                 </div>
-                <div v-show="staticpane[0][4]">
+                <div v-show="staticpane[0][4]" class="small">
                   {{ panes[0][4] }}
                 </div>
               </div>
             </div>
             <div id="small05"
                  @click="showchoose(0, 5)">
-              <div v-show="panes[0][5]!==0">
-                <div v-show="!staticpane[0][5]" style="color: blue">
+              <div v-show="panes[0][5]!==0" class="small">
+                <div v-show="!staticpane[0][5]" class="smallblue">
                   {{ panes[0][5] }}
                 </div>
-                <div v-show="staticpane[0][5]">
+                <div v-show="staticpane[0][5]" class="small">
                   {{ panes[0][5] }}
                 </div>
               </div>
             </div>
             <div id="small13"
                  @click="showchoose(1, 3)">
-              <div v-show="panes[1][3]!==0">
-                <div v-show="!staticpane[1][3]" style="color: blue">
+              <div v-show="panes[1][3]!==0" class="small">
+                <div v-show="!staticpane[1][3]" class="smallblue">
                   {{ panes[1][3] }}
                 </div>
-                <div v-show="staticpane[1][3]">
+                <div v-show="staticpane[1][3]" class="small">
                   {{ panes[1][3] }}
                 </div>
               </div>
             </div>
             <div id="small14"
                  @click="showchoose(1, 4)">
-              <div v-show="panes[1][4]!==0">
-                <div v-show="!staticpane[1][4]" style="color: blue">
+              <div v-show="panes[1][4]!==0" class="small">
+                <div v-show="!staticpane[1][4]" class="smallblue">
                   {{ panes[1][4] }}
                 </div>
-                <div v-show="staticpane[1][4]">
+                <div v-show="staticpane[1][4]" class="small">
                   {{ panes[1][4] }}
                 </div>
               </div>
             </div>
             <div id="small15"
                  @click="showchoose(1, 5)">
-              <div v-show="panes[1][5]!==0">
-                <div v-show="!staticpane[1][5]" style="color: blue">
+              <div v-show="panes[1][5]!==0" class="small">
+                <div v-show="!staticpane[1][5]" class="smallblue">
                   {{ panes[1][5] }}
                 </div>
-                <div v-show="staticpane[1][5]">
+                <div v-show="staticpane[1][5]" class="small">
                   {{ panes[1][5] }}
                 </div>
               </div>
             </div>
             <div id="small23"
                  @click="showchoose(2, 3)">
-              <div v-show="panes[2][3]!==0">
-                <div v-show="!staticpane[2][3]" style="color: blue">
+              <div v-show="panes[2][3]!==0" class="small">
+                <div v-show="!staticpane[2][3]" class="smallblue">
                   {{ panes[2][3] }}
                 </div>
-                <div v-show="staticpane[2][3]">
+                <div v-show="staticpane[2][3]" class="small">
                   {{ panes[2][3] }}
                 </div>
               </div>
             </div>
             <div id="small24"
                  @click="showchoose(2, 4)">
-              <div v-show="panes[2][4]!==0">
-                <div v-show="!staticpane[2][4]" style="color: blue">
+              <div v-show="panes[2][4]!==0" class="small">
+                <div v-show="!staticpane[2][4]" class="smallblue">
                   {{ panes[2][4] }}
                 </div>
-                <div v-show="staticpane[2][4]">
+                <div v-show="staticpane[2][4]" class="small">
                   {{ panes[2][4] }}
                 </div>
               </div>
             </div>
             <div id="small25"
                  @click="showchoose(2, 5)">
-              <div v-show="panes[2][5]!==0">
-                <div v-show="!staticpane[2][5]" style="color: blue">
+              <div v-show="panes[2][5]!==0" class="small">
+                <div v-show="!staticpane[2][5]" class="smallblue">
                   {{ panes[2][5] }}
                 </div>
-                <div v-show="staticpane[2][5]">
+                <div v-show="staticpane[2][5]" class="small">
                   {{ panes[2][5] }}
                 </div>
               </div>
@@ -229,99 +230,99 @@
           <div style="display: inline">
             <div id="small06"
                  @click="showchoose(0, 6)">
-              <div v-show="panes[0][6]!==0">
-                <div v-show="!staticpane[0][6]" style="color: blue">
+              <div v-show="panes[0][6]!==0" class="small">
+                <div v-show="!staticpane[0][6]" class="smallblue">
                   {{ panes[0][6] }}
                 </div>
-                <div v-show="staticpane[0][6]">
+                <div v-show="staticpane[0][6]" class="small">
                   {{ panes[0][6] }}
                 </div>
               </div>
             </div>
             <div id="small07"
                  @click="showchoose(0, 7)">
-              <div v-show="panes[0][7]!==0">
-                <div v-show="!staticpane[0][7]" style="color: blue">
+              <div v-show="panes[0][7]!==0" class="small">
+                <div v-show="!staticpane[0][7]" class="smallblue">
                   {{ panes[0][7] }}
                 </div>
-                <div v-show="staticpane[0][7]">
+                <div v-show="staticpane[0][7]" class="small">
                   {{ panes[0][7] }}
                 </div>
               </div>
             </div>
             <div id="small08"
                  @click="showchoose(0, 8)">
-              <div v-show="panes[0][8]!==0">
-                <div v-show="!staticpane[0][8]" style="color: blue">
+              <div v-show="panes[0][8]!==0" class="small">
+                <div v-show="!staticpane[0][8]" class="smallblue">
                   {{ panes[0][8] }}
                 </div>
-                <div v-show="staticpane[0][8]">
+                <div v-show="staticpane[0][8]" class="small">
                   {{ panes[0][8] }}
                 </div>
               </div>
             </div>
             <div id="small16"
                  @click="showchoose(1, 6)">
-              <div v-show="panes[1][6]!==0">
-                <div v-show="!staticpane[1][6]" style="color: blue">
+              <div v-show="panes[1][6]!==0" class="small">
+                <div v-show="!staticpane[1][6]" class="smallblue">
                   {{ panes[1][6] }}
                 </div>
-                <div v-show="staticpane[1][6]">
+                <div v-show="staticpane[1][6]" class="small">
                   {{ panes[1][6] }}
                 </div>
               </div>
             </div>
             <div id="small17"
                  @click="showchoose(1, 7)">
-              <div v-show="panes[1][7]!==0">
-                <div v-show="!staticpane[1][7]" style="color: blue">
+              <div v-show="panes[1][7]!==0" class="small">
+                <div v-show="!staticpane[1][7]" class="smallblue">
                   {{ panes[1][7] }}
                 </div>
-                <div v-show="staticpane[1][7]">
+                <div v-show="staticpane[1][7]" class="small">
                   {{ panes[1][7] }}
                 </div>
               </div>
             </div>
             <div id="small18"
                  @click="showchoose(1, 8)">
-              <div v-show="panes[1][8]!==0">
-                <div v-show="!staticpane[1][8]" style="color: blue">
+              <div v-show="panes[1][8]!==0" class="small">
+                <div v-show="!staticpane[1][8]" class="smallblue">
                   {{ panes[1][8] }}
                 </div>
-                <div v-show="staticpane[1][8]">
+                <div v-show="staticpane[1][8]" class="small">
                   {{ panes[1][8] }}
                 </div>
               </div>
             </div>
             <div id="small26"
                  @click="showchoose(2, 6)">
-              <div v-show="panes[2][6]!==0">
-                <div v-show="!staticpane[2][6]" style="color: blue">
+              <div v-show="panes[2][6]!==0" class="small">
+                <div v-show="!staticpane[2][6]" class="smallblue">
                   {{ panes[2][6] }}
                 </div>
-                <div v-show="staticpane[2][6]">
+                <div v-show="staticpane[2][6]" class="small">
                   {{ panes[2][6] }}
                 </div>
               </div>
             </div>
             <div id="small27"
                  @click="showchoose(2, 7)">
-              <div v-show="panes[2][7]!==0">
-                <div v-show="!staticpane[2][7]" style="color: blue">
+              <div v-show="panes[2][7]!==0" class="small">
+                <div v-show="!staticpane[2][7]" class="smallblue">
                   {{ panes[2][7] }}
                 </div>
-                <div v-show="staticpane[2][7]">
+                <div v-show="staticpane[2][7]" class="small">
                   {{ panes[2][7] }}
                 </div>
               </div>
             </div>
             <div id="small28"
                  @click="showchoose(2, 8)">
-              <div v-show="panes[2][8]!==0">
-                <div v-show="!staticpane[2][8]" style="color: blue">
+              <div v-show="panes[2][8]!==0" class="small">
+                <div v-show="!staticpane[2][8]" class="smallblue">
                   {{ panes[2][8] }}
                 </div>
-                <div v-show="staticpane[2][8]">
+                <div v-show="staticpane[2][8]" class="small">
                   {{ panes[2][8] }}
                 </div>
               </div>
@@ -332,99 +333,99 @@
           <div style="display: inline">
             <div id="small30"
                  @click="showchoose(3, 0)">
-              <div v-show="panes[3][0]!==0">
-                <div v-show="!staticpane[3][0]" style="color: blue">
+              <div v-show="panes[3][0]!==0" class="small">
+                <div v-show="!staticpane[3][0]" class="smallblue">
                   {{ panes[3][0] }}
                 </div>
-                <div v-show="staticpane[3][0]">
+                <div v-show="staticpane[3][0]" class="small">
                   {{ panes[3][0] }}
                 </div>
               </div>
             </div>
             <div id="small31"
                  @click="showchoose(3, 1)">
-              <div v-show="panes[3][1]!==0">
-                <div v-show="!staticpane[3][1]" style="color: blue">
+              <div v-show="panes[3][1]!==0" class="small">
+                <div v-show="!staticpane[3][1]" class="smallblue">
                   {{ panes[3][1] }}
                 </div>
-                <div v-show="staticpane[3][1]">
+                <div v-show="staticpane[3][1]" class="small">
                   {{ panes[3][1] }}
                 </div>
               </div>
             </div>
             <div id="small32"
                  @click="showchoose(3, 2)">
-              <div v-show="panes[3][2]!==0">
-                <div v-show="!staticpane[3][2]" style="color: blue">
+              <div v-show="panes[3][2]!==0" class="small">
+                <div v-show="!staticpane[3][2]" class="smallblue">
                   {{ panes[3][2] }}
                 </div>
-                <div v-show="staticpane[3][2]">
+                <div v-show="staticpane[3][2]" class="small">
                   {{ panes[3][2] }}
                 </div>
               </div>
             </div>
             <div id="small40"
                  @click="showchoose(4, 0)">
-              <div v-show="panes[4][0]!==0">
-                <div v-show="!staticpane[4][0]" style="color: blue">
+              <div v-show="panes[4][0]!==0" class="small">
+                <div v-show="!staticpane[4][0]" class="smallblue">
                   {{ panes[4][0] }}
                 </div>
-                <div v-show="staticpane[4][0]">
+                <div v-show="staticpane[4][0]" class="small">
                   {{ panes[4][0] }}
                 </div>
               </div>
             </div>
             <div id="small41"
                  @click="showchoose(4, 1)">
-              <div v-show="panes[4][1]!==0">
-                <div v-show="!staticpane[4][1]" style="color: blue">
+              <div v-show="panes[4][1]!==0" class="small">
+                <div v-show="!staticpane[4][1]" class="smallblue">
                   {{ panes[4][1] }}
                 </div>
-                <div v-show="staticpane[4][1]">
+                <div v-show="staticpane[4][1]" class="small">
                   {{ panes[4][1] }}
                 </div>
               </div>
             </div>
             <div id="small42"
                  @click="showchoose(4, 2)">
-              <div v-show="panes[4][2]!==0">
-                <div v-show="!staticpane[4][2]" style="color: blue">
+              <div v-show="panes[4][2]!==0" class="small">
+                <div v-show="!staticpane[4][2]" class="smallblue">
                   {{ panes[4][2] }}
                 </div>
-                <div v-show="staticpane[4][2]">
+                <div v-show="staticpane[4][2]" class="small">
                   {{ panes[4][2] }}
                 </div>
               </div>
             </div>
             <div id="small50"
                  @click="showchoose(5, 0)">
-              <div v-show="panes[5][0]!==0">
-                <div v-show="!staticpane[5][0]" style="color: blue">
+              <div v-show="panes[5][0]!==0" class="small">
+                <div v-show="!staticpane[5][0]" class="smallblue">
                   {{ panes[5][0] }}
                 </div>
-                <div v-show="staticpane[5][0]">
+                <div v-show="staticpane[5][0]" class="small">
                   {{ panes[5][0] }}
                 </div>
               </div>
             </div>
             <div id="small51"
                  @click="showchoose(5, 1)">
-              <div v-show="panes[5][1]!==0">
-                <div v-show="!staticpane[5][1]" style="color: blue">
+              <div v-show="panes[5][1]!==0" class="small">
+                <div v-show="!staticpane[5][1]" class="smallblue">
                   {{ panes[5][1] }}
                 </div>
-                <div v-show="staticpane[5][1]">
+                <div v-show="staticpane[5][1]" class="small">
                   {{ panes[5][1] }}
                 </div>
               </div>
             </div>
             <div id="small52"
                  @click="showchoose(5, 2)">
-              <div v-show="panes[5][2]!==0">
-                <div v-show="!staticpane[5][2]" style="color: blue">
+              <div v-show="panes[5][2]!==0" class="small">
+                <div v-show="!staticpane[5][2]" class="smallblue">
                   {{ panes[5][2] }}
                 </div>
-                <div v-show="staticpane[5][2]">
+                <div v-show="staticpane[5][2]" class="small">
                   {{ panes[5][2] }}
                 </div>
               </div>
@@ -435,99 +436,99 @@
           <div style="display: inline">
             <div id="small33"
                  @click="showchoose(3, 3)">
-              <div v-show="panes[3][3]!==0">
-                <div v-show="!staticpane[3][3]" style="color: blue">
+              <div v-show="panes[3][3]!==0" class="small">
+                <div v-show="!staticpane[3][3]" class="smallblue">
                   {{ panes[3][3] }}
                 </div>
-                <div v-show="staticpane[3][3]">
+                <div v-show="staticpane[3][3]" class="small">
                   {{ panes[3][3] }}
                 </div>
               </div>
             </div>
             <div id="small34"
                  @click="showchoose(3, 4)">
-              <div v-show="panes[3][4]!==0">
-                <div v-show="!staticpane[3][4]" style="color: blue">
+              <div v-show="panes[3][4]!==0" class="small">
+                <div v-show="!staticpane[3][4]" class="smallblue">
                   {{ panes[3][4] }}
                 </div>
-                <div v-show="staticpane[3][4]">
+                <div v-show="staticpane[3][4]" class="small">
                   {{ panes[3][4] }}
                 </div>
               </div>
             </div>
             <div id="small35"
                  @click="showchoose(3, 5)">
-              <div v-show="panes[3][5]!==0">
-                <div v-show="!staticpane[3][5]" style="color: blue">
+              <div v-show="panes[3][5]!==0" class="small">
+                <div v-show="!staticpane[3][5]" class="smallblue">
                   {{ panes[3][5] }}
                 </div>
-                <div v-show="staticpane[3][5]">
+                <div v-show="staticpane[3][5]" class="small">
                   {{ panes[3][5] }}
                 </div>
               </div>
             </div>
             <div id="small43"
                  @click="showchoose(4, 3)">
-              <div v-show="panes[4][3]!==0">
-                <div v-show="!staticpane[4][3]" style="color: blue">
+              <div v-show="panes[4][3]!==0" class="small">
+                <div v-show="!staticpane[4][3]" class="smallblue">
                   {{ panes[4][3] }}
                 </div>
-                <div v-show="staticpane[4][3]">
+                <div v-show="staticpane[4][3]" class="small">
                   {{ panes[4][3] }}
                 </div>
               </div>
             </div>
             <div id="small44"
                  @click="showchoose(4, 4)">
-              <div v-show="panes[4][4]!==0">
-                <div v-show="!staticpane[4][4]" style="color: blue">
+              <div v-show="panes[4][4]!==0" class="small">
+                <div v-show="!staticpane[4][4]" class="smallblue">
                   {{ panes[4][4] }}
                 </div>
-                <div v-show="staticpane[4][4]">
+                <div v-show="staticpane[4][4]" class="small">
                   {{ panes[4][4] }}
                 </div>
               </div>
             </div>
             <div id="small45"
                  @click="showchoose(4, 5)">
-              <div v-show="panes[4][5]!==0">
-                <div v-show="!staticpane[4][5]" style="color: blue">
+              <div v-show="panes[4][5]!==0" class="small">
+                <div v-show="!staticpane[4][5]" class="smallblue">
                   {{ panes[4][5] }}
                 </div>
-                <div v-show="staticpane[4][5]">
+                <div v-show="staticpane[4][5]" class="small">
                   {{ panes[4][5] }}
                 </div>
               </div>
             </div>
             <div id="small53"
                  @click="showchoose(5, 3)">
-              <div v-show="panes[5][3]!==0">
-                <div v-show="!staticpane[5][3]" style="color: blue">
+              <div v-show="panes[5][3]!==0" class="small">
+                <div v-show="!staticpane[5][3]" class="smallblue">
                   {{ panes[5][3] }}
                 </div>
-                <div v-show="staticpane[5][3]">
+                <div v-show="staticpane[5][3]" class="small">
                   {{ panes[5][3] }}
                 </div>
               </div>
             </div>
             <div id="small54"
                  @click="showchoose(5, 4)">
-              <div v-show="panes[5][4]!==0">
-                <div v-show="!staticpane[5][4]" style="color: blue">
+              <div v-show="panes[5][4]!==0" class="small">
+                <div v-show="!staticpane[5][4]" class="smallblue">
                   {{ panes[5][4] }}
                 </div>
-                <div v-show="staticpane[5][4]">
+                <div v-show="staticpane[5][4]" class="small">
                   {{ panes[5][4] }}
                 </div>
               </div>
             </div>
             <div id="small55"
                  @click="showchoose(5, 5)">
-              <div v-show="panes[5][5]!==0">
-                <div v-show="!staticpane[5][5]" style="color: blue">
+              <div v-show="panes[5][5]!==0" class="small">
+                <div v-show="!staticpane[5][5]" class="smallblue">
                   {{ panes[5][5] }}
                 </div>
-                <div v-show="staticpane[5][5]">
+                <div v-show="staticpane[5][5]" class="small">
                   {{ panes[5][5] }}
                 </div>
               </div>
@@ -538,99 +539,99 @@
           <div style="display: inline">
             <div id="small36"
                  @click="showchoose(3, 6)">
-              <div v-show="panes[3][6]!==0">
-                <div v-show="!staticpane[3][6]" style="color: blue">
+              <div v-show="panes[3][6]!==0" class="small">
+                <div v-show="!staticpane[3][6]" class="smallblue">
                   {{ panes[3][6] }}
                 </div>
-                <div v-show="staticpane[3][6]">
+                <div v-show="staticpane[3][6]" class="small">
                   {{ panes[3][6] }}
                 </div>
               </div>
             </div>
             <div id="small37"
                  @click="showchoose(3, 7)">
-              <div v-show="panes[3][7]!==0">
-                <div v-show="!staticpane[3][7]" style="color: blue">
+              <div v-show="panes[3][7]!==0" class="small">
+                <div v-show="!staticpane[3][7]" class="smallblue">
                   {{ panes[3][7] }}
                 </div>
-                <div v-show="staticpane[3][7]">
+                <div v-show="staticpane[3][7]" class="small">
                   {{ panes[3][7] }}
                 </div>
               </div>
             </div>
             <div id="small38"
                  @click="showchoose(3, 8)">
-              <div v-show="panes[3][8]!==0">
-                <div v-show="!staticpane[3][8]" style="color: blue">
+              <div v-show="panes[3][8]!==0" class="small">
+                <div v-show="!staticpane[3][8]" class="smallblue">
                   {{ panes[3][8] }}
                 </div>
-                <div v-show="staticpane[3][8]">
+                <div v-show="staticpane[3][8]" class="small">
                   {{ panes[3][8] }}
                 </div>
               </div>
             </div>
             <div id="small46"
                  @click="showchoose(4, 6)">
-              <div v-show="panes[4][6]!==0">
-                <div v-show="!staticpane[4][6]" style="color: blue">
+              <div v-show="panes[4][6]!==0" class="small">
+                <div v-show="!staticpane[4][6]" class="smallblue">
                   {{ panes[4][6] }}
                 </div>
-                <div v-show="staticpane[4][6]">
+                <div v-show="staticpane[4][6]" class="small">
                   {{ panes[4][6] }}
                 </div>
               </div>
             </div>
             <div id="small47"
                  @click="showchoose(4, 7)">
-              <div v-show="panes[4][7]!==0">
-                <div v-show="!staticpane[4][7]" style="color: blue">
+              <div v-show="panes[4][7]!==0" class="small">
+                <div v-show="!staticpane[4][7]" class="smallblue">
                   {{ panes[4][7] }}
                 </div>
-                <div v-show="staticpane[4][7]">
+                <div v-show="staticpane[4][7]" class="small">
                   {{ panes[4][7] }}
                 </div>
               </div>
             </div>
             <div id="small48"
                  @click="showchoose(4, 8)">
-              <div v-show="panes[4][8]!==0">
-                <div v-show="!staticpane[4][8]" style="color: blue">
+              <div v-show="panes[4][8]!==0" class="small">
+                <div v-show="!staticpane[4][8]" class="smallblue">
                   {{ panes[4][8] }}
                 </div>
-                <div v-show="staticpane[4][8]">
+                <div v-show="staticpane[4][8]" class="small">
                   {{ panes[4][8] }}
                 </div>
               </div>
             </div>
             <div id="small56"
                  @click="showchoose(5, 6)">
-              <div v-show="panes[5][6]!==0">
-                <div v-show="!staticpane[5][6]" style="color: blue">
+              <div v-show="panes[5][6]!==0" class="small">
+                <div v-show="!staticpane[5][6]" class="smallblue">
                   {{ panes[5][6] }}
                 </div>
-                <div v-show="staticpane[5][6]">
+                <div v-show="staticpane[5][6]" class="small">
                   {{ panes[5][6] }}
                 </div>
               </div>
             </div>
             <div id="small57"
                  @click="showchoose(5, 7)">
-              <div v-show="panes[5][7]!==0">
-                <div v-show="!staticpane[5][7]" style="color: blue">
+              <div v-show="panes[5][7]!==0" class="small">
+                <div v-show="!staticpane[5][7]" class="smallblue">
                   {{ panes[5][7] }}
                 </div>
-                <div v-show="staticpane[5][7]">
+                <div v-show="staticpane[5][7]" class="small">
                   {{ panes[5][7] }}
                 </div>
               </div>
             </div>
             <div id="small58"
                  @click="showchoose(5, 8)">
-              <div v-show="panes[5][8]!==0">
-                <div v-show="!staticpane[5][8]" style="color: blue">
+              <div v-show="panes[5][8]!==0" class="small">
+                <div v-show="!staticpane[5][8]" class="smallblue">
                   {{ panes[5][8] }}
                 </div>
-                <div v-show="staticpane[5][8]">
+                <div v-show="staticpane[5][8]" class="small">
                   {{ panes[5][8] }}
                 </div>
               </div>
@@ -641,99 +642,99 @@
           <div style="display: inline">
             <div id="small60"
                  @click="showchoose(6, 0)">
-              <div v-show="panes[6][0]!==0">
-                <div v-show="!staticpane[6][0]" style="color: blue">
+              <div v-show="panes[6][0]!==0" class="small">
+                <div v-show="!staticpane[6][0]" class="smallblue">
                   {{ panes[6][0] }}
                 </div>
-                <div v-show="staticpane[6][0]">
+                <div v-show="staticpane[6][0]" class="small">
                   {{ panes[6][0] }}
                 </div>
               </div>
             </div>
             <div id="small61"
                  @click="showchoose(6, 1)">
-              <div v-show="panes[6][1]!==0">
-                <div v-show="!staticpane[6][1]" style="color: blue">
+              <div v-show="panes[6][1]!==0" class="small">
+                <div v-show="!staticpane[6][1]" class="smallblue">
                   {{ panes[6][1] }}
                 </div>
-                <div v-show="staticpane[6][1]">
+                <div v-show="staticpane[6][1]" class="small">
                   {{ panes[6][1] }}
                 </div>
               </div>
             </div>
             <div id="small62"
                  @click="showchoose(6, 2)">
-              <div v-show="panes[6][2]!==0">
-                <div v-show="!staticpane[6][2]" style="color: blue">
+              <div v-show="panes[6][2]!==0" class="small">
+                <div v-show="!staticpane[6][2]" class="smallblue">
                   {{ panes[6][2] }}
                 </div>
-                <div v-show="staticpane[6][2]">
+                <div v-show="staticpane[6][2]" class="small">
                   {{ panes[6][2] }}
                 </div>
               </div>
             </div>
             <div id="small70"
                  @click="showchoose(7, 0)">
-              <div v-show="panes[7][0]!==0">
-                <div v-show="!staticpane[7][0]" style="color: blue">
+              <div v-show="panes[7][0]!==0" class="small">
+                <div v-show="!staticpane[7][0]" class="smallblue">
                   {{ panes[7][0] }}
                 </div>
-                <div v-show="staticpane[7][0]">
+                <div v-show="staticpane[7][0]" class="small">
                   {{ panes[7][0] }}
                 </div>
               </div>
             </div>
             <div id="small71"
                  @click="showchoose(7, 1)">
-              <div v-show="panes[7][1]!==0">
-                <div v-show="!staticpane[7][1]" style="color: blue">
+              <div v-show="panes[7][1]!==0" class="small">
+                <div v-show="!staticpane[7][1]" class="smallblue">
                   {{ panes[7][1] }}
                 </div>
-                <div v-show="staticpane[7][1]">
+                <div v-show="staticpane[7][1]" class="small">
                   {{ panes[7][1] }}
                 </div>
               </div>
             </div>
             <div id="small72"
                  @click="showchoose(7, 2)">
-              <div v-show="panes[7][2]!==0">
-                <div v-show="!staticpane[7][2]" style="color: blue">
+              <div v-show="panes[7][2]!==0" class="small">
+                <div v-show="!staticpane[7][2]" class="smallblue">
                   {{ panes[7][2] }}
                 </div>
-                <div v-show="staticpane[7][2]">
+                <div v-show="staticpane[7][2]" class="small">
                   {{ panes[7][2] }}
                 </div>
               </div>
             </div>
             <div id="small80"
                  @click="showchoose(8, 0)">
-              <div v-show="panes[8][0]!==0">
-                <div v-show="!staticpane[8][0]" style="color: blue">
+              <div v-show="panes[8][0]!==0" class="small">
+                <div v-show="!staticpane[8][0]" class="smallblue">
                   {{ panes[8][0] }}
                 </div>
-                <div v-show="staticpane[8][0]">
+                <div v-show="staticpane[8][0]" class="small">
                   {{ panes[8][0] }}
                 </div>
               </div>
             </div>
             <div id="small81"
                  @click="showchoose(8, 1)">
-              <div v-show="panes[8][1]!==0">
-                <div v-show="!staticpane[8][1]" style="color: blue">
+              <div v-show="panes[8][1]!==0" class="small">
+                <div v-show="!staticpane[8][1]" class="smallblue">
                   {{ panes[8][1] }}
                 </div>
-                <div v-show="staticpane[8][1]">
+                <div v-show="staticpane[8][1]" class="small">
                   {{ panes[8][1] }}
                 </div>
               </div>
             </div>
             <div id="small82"
                  @click="showchoose(8, 2)">
-              <div v-show="panes[8][2]!==0">
-                <div v-show="!staticpane[8][2]" style="color: blue">
+              <div v-show="panes[8][2]!==0" class="small">
+                <div v-show="!staticpane[8][2]" class="smallblue">
                   {{ panes[8][2] }}
                 </div>
-                <div v-show="staticpane[8][2]">
+                <div v-show="staticpane[8][2]" class="small">
                   {{ panes[8][2] }}
                 </div>
               </div>
@@ -744,99 +745,99 @@
           <div style="display: inline">
             <div id="small63"
                  @click="showchoose(6, 3)">
-              <div v-show="panes[6][3]!==0">
-                <div v-show="!staticpane[6][3]" style="color: blue">
+              <div v-show="panes[6][3]!==0" class="small">
+                <div v-show="!staticpane[6][3]" class="smallblue">
                   {{ panes[6][3] }}
                 </div>
-                <div v-show="staticpane[6][3]">
+                <div v-show="staticpane[6][3]" class="small">
                   {{ panes[6][3] }}
                 </div>
               </div>
             </div>
             <div id="small64"
                  @click="showchoose(6, 4)">
-              <div v-show="panes[6][4]!==0">
-                <div v-show="!staticpane[6][4]" style="color: blue">
+              <div v-show="panes[6][4]!==0" class="small">
+                <div v-show="!staticpane[6][4]" class="smallblue">
                   {{ panes[6][4] }}
                 </div>
-                <div v-show="staticpane[6][4]">
+                <div v-show="staticpane[6][4]" class="small">
                   {{ panes[6][4] }}
                 </div>
               </div>
             </div>
             <div id="small65"
                  @click="showchoose(6, 5)">
-              <div v-show="panes[6][5]!==0">
-                <div v-show="!staticpane[6][5]" style="color: blue">
+              <div v-show="panes[6][5]!==0" class="small">
+                <div v-show="!staticpane[6][5]" class="smallblue">
                   {{ panes[6][5] }}
                 </div>
-                <div v-show="staticpane[6][5]">
+                <div v-show="staticpane[6][5]" class="small">
                   {{ panes[6][5] }}
                 </div>
               </div>
             </div>
             <div id="small73"
                  @click="showchoose(7, 3)">
-              <div v-show="panes[7][3]!==0">
-                <div v-show="!staticpane[7][3]" style="color: blue">
+              <div v-show="panes[7][3]!==0" class="small">
+                <div v-show="!staticpane[7][3]" class="smallblue">
                   {{ panes[7][3] }}
                 </div>
-                <div v-show="staticpane[7][3]">
+                <div v-show="staticpane[7][3]" class="small">
                   {{ panes[7][3] }}
                 </div>
               </div>
             </div>
             <div id="small74"
                  @click="showchoose(7, 4)">
-              <div v-show="panes[7][4]!==0">
-                <div v-show="!staticpane[7][4]" style="color: blue">
+              <div v-show="panes[7][4]!==0" class="small">
+                <div v-show="!staticpane[7][4]" class="smallblue">
                   {{ panes[7][4] }}
                 </div>
-                <div v-show="staticpane[7][4]">
+                <div v-show="staticpane[7][4]" class="small">
                   {{ panes[7][4] }}
                 </div>
               </div>
             </div>
             <div id="small75"
                  @click="showchoose(7, 5)">
-              <div v-show="panes[7][5]!==0">
-                <div v-show="!staticpane[7][5]" style="color: blue">
+              <div v-show="panes[7][5]!==0" class="small">
+                <div v-show="!staticpane[7][5]" class="smallblue">
                   {{ panes[7][5] }}
                 </div>
-                <div v-show="staticpane[7][5]">
+                <div v-show="staticpane[7][5]" class="small">
                   {{ panes[7][5] }}
                 </div>
               </div>
             </div>
             <div id="small83"
                  @click="showchoose(8, 3)">
-              <div v-show="panes[8][3]!==0">
-                <div v-show="!staticpane[8][3]" style="color: blue">
+              <div v-show="panes[8][3]!==0" class="small">
+                <div v-show="!staticpane[8][3]" class="smallblue">
                   {{ panes[8][3] }}
                 </div>
-                <div v-show="staticpane[8][3]">
+                <div v-show="staticpane[8][3]" class="small">
                   {{ panes[8][3] }}
                 </div>
               </div>
             </div>
             <div id="small84"
                  @click="showchoose(8, 4)">
-              <div v-show="panes[8][4]!==0">
-                <div v-show="!staticpane[8][4]" style="color: blue">
+              <div v-show="panes[8][4]!==0" class="small">
+                <div v-show="!staticpane[8][4]" class="smallblue">
                   {{ panes[8][4] }}
                 </div>
-                <div v-show="staticpane[8][4]">
+                <div v-show="staticpane[8][4]" class="small">
                   {{ panes[8][4] }}
                 </div>
               </div>
             </div>
             <div id="small85"
                  @click="showchoose(8, 5)">
-              <div v-show="panes[8][5]!==0">
-                <div v-show="!staticpane[8][5]" style="color: blue">
+              <div v-show="panes[8][5]!==0" class="small">
+                <div v-show="!staticpane[8][5]" class="smallblue">
                   {{ panes[8][5] }}
                 </div>
-                <div v-show="staticpane[8][5]">
+                <div v-show="staticpane[8][5]" class="small">
                   {{ panes[8][5] }}
                 </div>
               </div>
@@ -847,105 +848,106 @@
           <div style="display: inline">
             <div id="small66"
                  @click="showchoose(6, 6)">
-              <div v-show="panes[6][6]!==0">
-                <div v-show="!staticpane[6][6]" style="color: blue">
+              <div v-show="panes[6][6]!==0" class="small">
+                <div v-show="!staticpane[6][6]" class="smallblue">
                   {{ panes[6][6] }}
                 </div>
-                <div v-show="staticpane[6][6]">
+                <div v-show="staticpane[6][6]" class="small">
                   {{ panes[6][6] }}
                 </div>
               </div>
             </div>
             <div id="small67"
                  @click="showchoose(6, 7)">
-              <div v-show="panes[6][7]!==0">
-                <div v-show="!staticpane[6][7]" style="color: blue">
+              <div v-show="panes[6][7]!==0" class="small">
+                <div v-show="!staticpane[6][7]" class="smallblue">
                   {{ panes[6][7] }}
                 </div>
-                <div v-show="staticpane[6][7]">
+                <div v-show="staticpane[6][7]" class="small">
                   {{ panes[6][7] }}
                 </div>
               </div>
             </div>
             <div id="small68"
                  @click="showchoose(6, 8)">
-              <div v-show="panes[6][8]!==0">
-                <div v-show="!staticpane[6][8]" style="color: blue">
+              <div v-show="panes[6][8]!==0" class="small">
+                <div v-show="!staticpane[6][8]" class="smallblue">
                   {{ panes[6][8] }}
                 </div>
-                <div v-show="staticpane[6][8]">
+                <div v-show="staticpane[6][8]" class="small">
                   {{ panes[6][8] }}
                 </div>
               </div>
             </div>
             <div id="small76"
                  @click="showchoose(7, 6)">
-              <div v-show="panes[7][6]!==0">
-                <div v-show="!staticpane[7][6]" style="color: blue">
+              <div v-show="panes[7][6]!==0" class="small">
+                <div v-show="!staticpane[7][6]" class="smallblue">
                   {{ panes[7][6] }}
                 </div>
-                <div v-show="staticpane[7][6]">
+                <div v-show="staticpane[7][6]" class="small">
                   {{ panes[7][6] }}
                 </div>
               </div>
             </div>
             <div id="small77"
                  @click="showchoose(7, 7)">
-              <div v-show="panes[7][7]!==0">
-                <div v-show="!staticpane[7][7]" style="color: blue">
+              <div v-show="panes[7][7]!==0" class="small">
+                <div v-show="!staticpane[7][7]" class="smallblue">
                   {{ panes[7][7] }}
                 </div>
-                <div v-show="staticpane[7][7]">
+                <div v-show="staticpane[7][7]" class="small">
                   {{ panes[7][7] }}
                 </div>
               </div>
             </div>
             <div id="small78"
                  @click="showchoose(7, 8)">
-              <div v-show="panes[7][8]!==0">
-                <div v-show="!staticpane[7][8]" style="color: blue">
+              <div v-show="panes[7][8]!==0" class="small">
+                <div v-show="!staticpane[7][8]" class="smallblue">
                   {{ panes[7][8] }}
                 </div>
-                <div v-show="staticpane[7][8]">
+                <div v-show="staticpane[7][8]" class="small">
                   {{ panes[7][8] }}
                 </div>
               </div>
             </div>
             <div id="small86"
                  @click="showchoose(8, 6)">
-              <div v-show="panes[8][6]!==0">
-                <div v-show="!staticpane[8][6]" style="color: blue">
+              <div v-show="panes[8][6]!==0" class="small">
+                <div v-show="!staticpane[8][6]" class="smallblue">
                   {{ panes[8][6] }}
                 </div>
-                <div v-show="staticpane[8][6]">
+                <div v-show="staticpane[8][6]" class="small">
                   {{ panes[8][6] }}
                 </div>
               </div>
             </div>
             <div id="small87"
                  @click="showchoose(8, 7)">
-              <div v-show="panes[8][7]!==0">
-                <div v-show="!staticpane[8][7]" style="color: blue">
+              <div v-show="panes[8][7]!==0" class="small">
+                <div v-show="!staticpane[8][7]" class="smallblue">
                   {{ panes[8][7] }}
                 </div>
-                <div v-show="staticpane[8][7]">
+                <div v-show="staticpane[8][7]" class="small">
                   {{ panes[8][7] }}
                 </div>
               </div>
             </div>
             <div id="small88"
                  @click="showchoose(8, 8)">
-              <div v-show="panes[8][8]!==0">
-                <div v-show="!staticpane[8][8]" style="color: blue">
+              <div v-show="panes[8][8]!==0" class="small">
+                <div v-show="!staticpane[8][8]" class="smallblue">
                   {{ panes[8][8] }}
                 </div>
-                <div v-show="staticpane[8][8]">
+                <div v-show="staticpane[8][8]" class="small">
                   {{ panes[8][8] }}
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <span @click="show"></span>
         <div style="margin-left: 40%; width: 20%">
           <el-button @click="submit">
             提交
@@ -962,7 +964,8 @@ export default {
   props: ['infos'],
   data() {
     return {
-      loading: false,
+      tranLeft: 0, // 向左偏移
+      tranTop: 0,  // 向右偏移
       day: 0,
       hr: 0,
       min: 0,
@@ -997,8 +1000,20 @@ export default {
     this.countup()
   },
   methods: {
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     submit() {
-      alert('提交成功')
+      this.alertmsg('提交成功', 'success')
       this.loading = true;
       var panes = "";
       for (var i = 0; i < 9; i++) {
@@ -1006,8 +1021,6 @@ export default {
           panes += this.panes[i][j].toString();
         }
       }
-      // alert(panes)
-      console.log(panes)
       this.$axios
           .post("/reward/creat", {
             rewardInfo: {
@@ -1026,15 +1039,14 @@ export default {
           })
           .then((res) => {
             if (res.data.code === 0) {
-              alert('创建题目成功')
+              this.alertmsg('创建题目成功', 'success')
               this.$router.push("reward");
             } else {
-              alert(res.data.msg)
+              this.alertmsg(res.data.msg, 'warning')
             }
           })
-          .catch((error) => {
-            alert(error.data.status);
-            console.log(error);
+          .catch(() => {
+            this.alerterror()
           });
       this.loading = false;
     },
@@ -1078,6 +1090,14 @@ export default {
     },
     notshowchoose() {
       this.show = false
+    },
+    showbox(e) {
+      // 根据事件处理参数e下的pageX，PageY来定位div的位置
+      // 需要计算下div定位的差值 我这边是横轴是500左右纵轴是163左右
+      this.tranLeft = (e.clientX) + 'px'
+      this.tranTop = (e.clientY-66) + 'px'
+
+      console.log(this.tranLeft, this.tranTop)
     }
   }
 }
@@ -1085,22 +1105,32 @@ export default {
 
 <style scoped>
 
-.choose-box-pos {
-  position: absolute;
-  margin-left: -13%;
-  margin-top: 14%;
-}
-
-.choose-box-top {
-  background-color: #99a9bf;
-  width: 160px;
-  height: 20px;
-}
-
 .choose-box {
+  position: absolute;
   background-color: #99a9bf;
-  width: 160px;
-  height: 160px;
+  width: 9rem;
+  height: 9rem;
+}
+
+.small {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 55px;
+  font-size: xx-large;
+}
+
+.smallblue {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 55px;
+  font-size: xx-large;
+  color: blue;
 }
 
 #choose-button1 {
@@ -1110,6 +1140,7 @@ export default {
   margin-top: 1%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button2 {
@@ -1119,6 +1150,7 @@ export default {
   margin-top: 1%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button3 {
@@ -1128,6 +1160,7 @@ export default {
   margin-top: 1%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button4 {
@@ -1137,6 +1170,7 @@ export default {
   margin-top: 3%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button5 {
@@ -1146,6 +1180,7 @@ export default {
   margin-top: 3%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button6 {
@@ -1155,6 +1190,7 @@ export default {
   margin-top: 3%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button7 {
@@ -1164,6 +1200,7 @@ export default {
   margin-top: 3%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button8 {
@@ -1173,6 +1210,7 @@ export default {
   margin-top: 3%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 #choose-button9 {
@@ -1182,11 +1220,13 @@ export default {
   margin-top: 3%;
   border-radius: 60px;
   font-size: large;
+  padding: 12px;
 }
 
 .big {
   /*margin-top: 10%;*/
-  /*margin-left: 10%;*/
+  /*background-color: red;*/
+  margin-left: 20%;
   height: 700px;
   width: 700px;
 }

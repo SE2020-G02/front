@@ -24,7 +24,6 @@ Vue.prototype.$axios = axios
 axios.defaults.headers["Access-Control-Allow-Origin"] = "*"
 
 axios.defaults.baseURL = 'http://47.110.132.41:8081';
-// axios.defaults.baseURL = 'http://localhost:8081';
 
 // import qs from 'qs'
 // Vue.use(VueAxios, axios_instance);

@@ -21,7 +21,7 @@
         </div>
       </el-col>
       <el-col :span="14">
-        <new-mid-part></new-mid-part>
+        <new-mid-part style="margin-left: -7%"></new-mid-part>
       </el-col>
       <el-col :span="5">
         <div class="right-part">

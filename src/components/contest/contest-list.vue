@@ -9,55 +9,55 @@
                 <template #title>
                   <div class="room-title" align="center">level 1</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlist(2)">
                 <template #title>
                   <div class="room-title" align="center">level 2</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlist(3)">
                 <template #title>
                   <div class="room-title" align="center">level 3</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlist(4)">
                 <template #title>
                   <div class="room-title" align="center">level 4</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlist(5)">
                 <template #title>
                   <div class="room-title" align="center">level 5</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlist(6)">
                 <template #title>
                   <div class="room-title" align="center">level 6</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab disabled>
                 <template #title>
                   <div class="room-title" align="center">level 7</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab disabled>
                 <template #title>
                   <div class="room-title" align="center">level 8</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab disabled>
                 <template #title>
                   <div class="room-title" align="center">level 9</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <!-- <b-tab disabled>
                 <template #title>
@@ -72,19 +72,19 @@
                 <template #title>
                   <div class="room-title" align="center">比赛中</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlistState('待开始')">
                 <template #title>
                   <div class="room-title" align="center">待开始</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <b-tab @click="roomlistState('已结束')">
                 <template #title>
                   <div class="room-title" align="center">已结束</div>
                 </template>
-                <room-table :table="table"></room-table>
+                <room-table :table="table" :goroom="goroom"></room-table>
               </b-tab>
               <!-- <b-tab disabled>
                 <template #title>
@@ -297,14 +297,35 @@ export default {
       ],
       levelvalue: 1,
       table: [],
+      goroom: '',
+      f:0,
     };
   },
   mounted() {
     this.roomlist(1);
   },
   methods: {
+    gogo(){
+      if(localStorage.getItem('roomstate')==='已结束'&&this.f===1) return '开始练习'
+      return '进入房间'
+    },
+    alerterror() {
+      this.$confirm('服务器错误', "提示", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+    },
+    alertmsg(msg, type){
+      this.$message({
+        message: msg,
+        type: type
+      })
+    },
     roomlist(lev) {
       localStorage.setItem("roomlevel", lev);
+      this.f=0;
+      let t=this.gogo();
+      this.goroom=t;
       if (lev === 1) localStorage.setItem("roomstate", "比赛中");
       else if (lev === 2) localStorage.setItem("roomstate", "待开始");
       else localStorage.setItem("roomstate", "已结束");
@@ -315,22 +336,19 @@ export default {
           accountId: localStorage.getItem("userid"),
         })
         .then((res) => {
-          // if (res.data.code == 0) {
-          //   alert("1");
-          //   console.log("成功获取房间信息");
-          // }
           if (res.data.code === 0) {
             this.table = res.data.data.roomInfoList;
           }
-          // alert(res.data.msg);
         })
-        .catch((error) => {
-          alert("服务器错误roomlist");
-          console.log(error);
+        .catch(() => {
+          this.alerterror()
         });
     },
     roomlistState(state) {
       localStorage.setItem("roomstate", state);
+      this.f=1;
+      let t=this.gogo();
+      this.goroom=t;
       if (state === "比赛中") localStorage.setItem("roomlevel", 1);
       else if (state === "待开始") localStorage.setItem("roomlevel", 2);
       else localStorage.setItem("roomlevel", 3);
@@ -341,14 +359,12 @@ export default {
           problemState: state,
         })
         .then((res) => {
-          // alert(res.data.msg);
           if (res.data.code === 0) {
             this.table = res.data.data.roomInfoList;
           }
         })
-        .catch((error) => {
-          alert("服务器错误roomlistState");
-          console.log(error);
+        .catch(() => {
+          this.alerterror()
         });
     },
     tblchange(newtbl) {
@@ -362,9 +378,8 @@ export default {
       this.visible = true;
     },
     timeformat() {
-      // alert(this.roomForm.starttime);
       if (this.roomForm.starttime == null) {
-        alert("请选择比赛开始时间");
+        this.alertmsg('请选择比赛开始时间', 'warning')
       } else {
         const d = new Date(this.roomForm.starttime);
         const resDate =
@@ -405,9 +420,8 @@ export default {
           this.visible = false;
           this.roomlist(localStorage.getItem("roomlevel"));
         })
-        .catch((error) => {
-          alert("服务器错误createroom");
-          console.log(error);
+        .catch(() => {
+          this.alerterror()
         });
     },
     open(roomid, roomstate) {

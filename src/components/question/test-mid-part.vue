@@ -262,15 +262,6 @@ export default {
   border-radius: 100px;
 }
 
-.choose-box-top {
-  position: absolute;
-  margin-left: -20%;
-  margin-top: 18%;
-  background-color: #99a9bf;
-  width: 160px;
-  height: 20px;
-}
-
 .choose-box {
   position: absolute;
   margin-left: -13%;
