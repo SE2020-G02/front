@@ -1,14 +1,12 @@
 <template>
   <div>
+    <div class="bg"></div>
     <el-row>
       <el-col :span="5">
         <div style="height: 700px; border-right: #999999 solid 1px">
           <div align="center" style="margin-top: 10%; font-size: x-large; font-weight: bold">
             题目信息
           </div>
-<!--          <div class="problem-level info">-->
-<!--            题目难度：待评定-->
-<!--          </div>-->
           <hr class="hr-line">
           <div class="info">
             题号：待编号
@@ -17,7 +15,8 @@
               v-model="input"
               placeholder="请输入题目描述"
               class="info"
-              type="textarea"></el-input>
+              type="textarea"
+              style="margin-top: 5%"></el-input>
         </div>
       </el-col>
       <el-col :span="14">
@@ -33,11 +32,12 @@
 
 <script>
 import NewMidPart from "@/components/new-question/new-mid-part";
+
 export default {
   name: "new-question",
   components: {NewMidPart},
   data() {
-    return{
+    return {
       level: 4,
       problem_ID: 14523,
       input: ''
@@ -47,6 +47,16 @@ export default {
 </script>
 
 <style scoped>
+
+.bg {
+  left: 0;
+  top: 65px;
+  position: absolute;
+  width: 100%;
+  height: 90%;
+  background-color: white;
+  z-index: -1;
+}
 
 .hr-line {
   margin-left: 10%;

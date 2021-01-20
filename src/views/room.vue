@@ -1,58 +1,14 @@
 <template>
-  <div class="roombg">
+  <div>
+    <div class="bg"></div>
     <div class="room" style="width: 90%">
-      <!-- <el-row>
-      <el-col :span="5">
-        <div style="height: 700px; border-right: #999999 solid 1px">
-          <div
-            align="center"
-            style="margin-top: 10%; font-size: x-large; font-weight: bold"
-          >
-            题目信息
-          </div>
-          <hr class="hr-line" />
-          <div class="info">
-            {{ problem_info }}
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="14">
-        <div class="mid">
-          <div style="font-size: xx-large; margin-left: 6%">
-            距离比赛开始还有
-          </div>
-          <div style="font-size: 37px; color: #999999; margin-bottom: 20px">
-            剩余时间：{{ `${hr}:${min}:${sec}` }}
-          </div>
-          <div style="margin-left: 18%">
-            <el-button @click="dothings">
-              <div v-show="isin === 1">
-                <div v-show="start === 1">开始答题</div>
-                <div v-show="start === 0">退出房间</div>
-              </div>
-              <div v-show="isin === 0">加入房间</div>
-            </el-button>
-          </div>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="right-part">
-          <div align="center" class="right-title">参与列表</div>
-          <div class="subtitle">参与人数：{{ participants }}</div>
-          <hr class="hr-line" />
-          <div v-for="item in participant_list" :key="item" align="center">
-            {{ item.toLowerCase() }}
-          </div>
-        </div>
-      </el-col>
-    </el-row> -->
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="grid-room bg-room">
             <div align="center" style="font-size: x-large; font-weight: bold">
               题目信息
             </div>
-            <hr class="hr-line"/>
+            <hr class="hr-line" />
             <div class="info">
               {{ problem_info }}
             </div>
@@ -66,7 +22,7 @@
               距离比赛开始还有
             </div>
             <div
-                style="
+              style="
                 font-size: 37px;
                 color: #999999;
                 margin-top: 20px;
@@ -75,9 +31,8 @@
             >
               剩余时间：{{ `${hr}:${min}:${sec}` }}
             </div>
-            <el-button type="primary" plain @click="changebottontype">{{
-                bottontype
-              }}
+            <el-button type="primary" plain @click="changebottontype"
+              >{{ bottontype }}
             </el-button>
           </div>
         </el-col>
@@ -88,7 +43,7 @@
               参与列表
             </div>
             <div class="subtitle">参与人数：{{ participants }}</div>
-            <hr class="hr-line"/>
+            <hr class="hr-line" />
             <div v-for="item in participant_list" :key="item" align="center">
               {{ item.toLowerCase() }}
             </div>
@@ -129,10 +84,10 @@ export default {
   },
   methods: {
     alerterror() {
-      this.$confirm('服务器错误', "提示", {
+      this.$confirm("服务器错误", "提示", {
         confirmButtonText: "确定",
         type: "warning",
-      })
+      });
     },
     open() {
       var msg = "确定退出？";
@@ -145,21 +100,21 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-          .then(() => {
-            this.$message({
-              type: "success",
-              message: "退出成功!",
-            });
-            this.isin = 0;
-            this.quit();
-            this.$router.push("contest");
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消",
-            });
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "退出成功!",
           });
+          this.isin = 0;
+          this.quit();
+          this.$router.push("contest");
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
     },
     init() {
       this.getparticipants();
@@ -174,36 +129,36 @@ export default {
       } else if (this.bottontype === "开始答题") {
         if (!this.isin) this.joinin();
         this.startgame();
-        localStorage.setItem("isreward", '0');
-        localStorage.setItem("ispractice", '0');
-        localStorage.setItem("isrank", '1');
+        localStorage.setItem("isreward", "0");
+        localStorage.setItem("ispractice", "0");
+        localStorage.setItem("isrank", "1");
       }
     },
     joinin() {
       this.$axios
-          .post("/roomMember/join", {
-            roomId: this.roomid,
-            accountID: this.userid,
-          })
-          .then(() => {
-            this.getparticipants();
-          })
-          .catch(() => {
-            this.alerterror()
-          });
+        .post("/roomMember/join", {
+          roomId: this.roomid,
+          accountID: this.userid,
+        })
+        .then(() => {
+          this.getparticipants();
+        })
+        .catch(() => {
+          this.alerterror();
+        });
     },
     quit() {
       this.$axios
-          .post("/roomMember/quit", {
-            roomId: this.roomid,
-            accountID: this.userid,
-          })
-          .then(() => {
-            this.getparticipants();
-          })
-          .catch(() => {
-            this.alerterror()
-          });
+        .post("/roomMember/quit", {
+          roomId: this.roomid,
+          accountID: this.userid,
+        })
+        .then(() => {
+          this.getparticipants();
+        })
+        .catch(() => {
+          this.alerterror();
+        });
     },
     startgame() {
       localStorage.setItem("problemid", this.problem_ID);
@@ -211,27 +166,29 @@ export default {
     },
     getparticipants() {
       this.$axios
-          .post("/roomMember/room/message", {
-            roomId: this.roomid,
-          })
-          .then((res) => {
-            // var is = 0;
-            // alert(res.data.msg);
-            if (res.data.code === 0) {
-              this.participants = res.data.data.memberCount;
-              this.participant_list = res.data.data.accountsName;
-              for (let i in this.participant_list) {
-                if (this.participant_list[i] === localStorage.getItem("username")) {
-                  this.isin = 1;
-                }
+        .post("/roomMember/room/message", {
+          roomId: this.roomid,
+        })
+        .then((res) => {
+          // var is = 0;
+          // alert(res.data.msg);
+          if (res.data.code === 0) {
+            this.participants = res.data.data.memberCount;
+            this.participant_list = res.data.data.accountsName;
+            for (let i in this.participant_list) {
+              if (
+                this.participant_list[i] === localStorage.getItem("username")
+              ) {
+                this.isin = 1;
               }
             }
-            if (this.isin === 1) this.bottontype = "退出比赛";
-            if (this.isin === 0) this.bottontype = "加入比赛";
-          })
-          .catch(() => {
-            this.alerterror()
-          });
+          }
+          if (this.isin === 1) this.bottontype = "退出比赛";
+          if (this.isin === 0) this.bottontype = "加入比赛";
+        })
+        .catch(() => {
+          this.alerterror();
+        });
     },
     countdown: function () {
       const now = Date.parse(new Date());
@@ -243,7 +200,7 @@ export default {
         this.min = "00";
         this.sec = "00";
         this.start = 1;
-        this.bottontype = "开始答题"
+        this.bottontype = "开始答题";
       } else {
         let day = parseInt(msec / 1000 / 60 / 60 / 24);
         let hr = parseInt(msec / 1000 / 60 / 60);
@@ -264,9 +221,15 @@ export default {
 </script>
 
 <style>
-.roombg {
+
+.bg {
+  left: 0;
+  top: 65px;
+  position: absolute;
   width: 100%;
+  height: 90%;
   background-color: white;
+  z-index: -1;
 }
 
 .room {

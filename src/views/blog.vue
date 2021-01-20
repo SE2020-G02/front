@@ -1,5 +1,6 @@
 <template>
   <div class="blog">
+    <div class="bg"></div>
     <el-row :gutter="50">
       <el-col :span="17">
         <div class="grid-blog bg-blog">
@@ -11,17 +12,10 @@
                 {{ signature }}
               </div>
             </div>
-            <!-- <div style="height: 100px; color: #999999">
-              最近更新：{{ update_time }}
-            </div> -->
           </div>
           <hr />
           <div class="mainbody" align="center" style="margin-bottom: 6%">
             <div class="fs-xl" style="margin: 20px">题目{{ problemid }}</div>
-            <!-- <img
-             src="../components/practice/problem.png"
-             style="height: 300px"
-           /> -->
             <small-problem
               :problemid="problemid"
               :isblog="1"
@@ -29,9 +23,6 @@
               style="width: 25rem; height: 25rem; margin-left: 5%"
             ></small-problem>
             <div class="fs-md">当前blog：{{ blogid }}</div>
-            <!-- <div>
-              <small-problem :problemid="problemid"></small-problem>
-            </div> -->
           </div>
           <div style="margin-left: 10px; margin-bottom: 20px">
             {{ blog_info }}
@@ -43,7 +34,30 @@
             class="d-flex"
             style="margin-left: 10px; margin-bottom: 20px; color: #0079fe"
           >
-            <div @click="feedback">反馈</div>
+            <div @click="visiblefb = true">反馈</div>
+            <el-dialog title="反馈" :visible.sync="visiblefb">
+              <el-form ref="form" label-width="80px">
+                <el-form-item label="当前博客">
+                  {{ blogid }}
+                </el-form-item>
+                <el-form-item label="反馈信息">
+                  <el-input
+                    type="textarea"
+                    v-model="newfb"
+                    autosize="ture"
+                    show-word-limit="true"
+                    maxlength="2000"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="visiblefb = false">取 消</el-button>
+                <el-button type="primary" @click="submitfeedback"
+                  >确 定</el-button
+                >
+              </div>
+            </el-dialog>
+
             <div
               style="margin-left: auto; margin-right: 5px"
               @click="visible = true"
@@ -89,8 +103,10 @@
           </div>
           <!-- <hr color=" #d4d9de" /> -->
           <el-table :data="more_blog_list" border style="width: 100%">
-            <el-table-column prop="blogId" label="Blog"> </el-table-column>
-            <el-table-column prop="problemId" label="题目"> </el-table-column>
+            <el-table-column prop="blogId" label="Blog" width="70">
+            </el-table-column>
+            <el-table-column prop="problemId" label="题目" width="70">
+            </el-table-column>
             <el-table-column prop="accountNickname" label="作者">
             </el-table-column>
             <el-table-column fixed="right" width="50">
@@ -123,7 +139,7 @@ export default {
       author: "渣男12138",
       signature:
         "这个人什么也没说，这个人什么也没说，这个人什么也没说，这个人什么也没说",
-      problemid: localStorage.getItem('problemid'),
+      problemid: localStorage.getItem("problemid"),
       blogid: "0000",
       blog_info: "这里是题解正文，这里是题解正文，这里是题解正文",
       // comment_num: 158,
@@ -140,6 +156,9 @@ export default {
       visible: false,
       newbloginfo: "",
       // formLabelWidth: "120px",
+
+      visiblefb: false,
+      newfb: "反馈",
     };
   },
   mounted() {
@@ -147,21 +166,42 @@ export default {
   },
   methods: {
     alerterror() {
-      this.$confirm('服务器错误', "提示", {
+      this.$confirm("服务器错误", "提示", {
         confirmButtonText: "确定",
         type: "warning",
-      })
+      });
     },
-    alertmsg(msg, type){
+    alertmsg(msg, type) {
       this.$message({
         message: msg,
-        type: type
-      })
+        type: type,
+      });
     },
     init() {
-      this.problemid = localStorage.getItem('problemid');
+      this.problemid = localStorage.getItem("problemid");
       this.getbloginfo();
       this.getmorelist();
+    },
+    submitfeedback() {
+      this.$axios
+        .post("/appeal/submit", {
+          accountId: localStorage.getItem("userid"),
+          // accountNickname: localStorage.getItem("username"),
+          appealMessage: this.newfb,
+          appealType: "博客",
+          appealTypeId: this.blogid,
+        })
+        .then((res) => {
+          if (res.data.code === 0) {
+            this.alertmsg("提交成功", "success");
+            this.init();
+          }
+        })
+        .catch(() => {
+          this.alerterror();
+        });
+
+      this.visiblefb = false;
     },
     submitblog() {
       this.$axios
@@ -174,12 +214,12 @@ export default {
           if (res.data.code === 0) {
             this.blogid = res.data.data.blogId;
             localStorage.setItem("blogid", res.data.data.blogId);
-            this.alertmsg('提交成功', 'success')
+            this.alertmsg("提交成功", "success");
             this.init();
           }
         })
         .catch(() => {
-          this.alerterror()
+          this.alerterror();
         });
 
       this.visible = false;
@@ -206,7 +246,7 @@ export default {
           }
         })
         .catch(() => {
-          this.alerterror()
+          this.alerterror();
         });
     },
     getmorelist() {
@@ -225,7 +265,7 @@ export default {
           }
         })
         .catch(() => {
-          this.alerterror()
+          this.alerterror();
         });
     },
     readotherblog(theblogid) {
@@ -233,15 +273,28 @@ export default {
       localStorage.setItem("blogid", theblogid);
       this.init();
     },
-    feedback() {},
-    write() {
-      this.$router.push("writeblog");
-    },
+    // feedback() {
+    //   this.$router.push("feedbakck");
+    // },
+    // write() {
+    //   this.$router.push("writeblog");
+    // },
   },
 };
 </script>
 
 <style>
+
+.bg {
+  left: 0;
+  top: 65px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: -1;
+}
+
 .blog {
   margin-top: 3%;
   margin-left: 13%;
@@ -253,9 +306,6 @@ export default {
   border-radius: 4px;
   min-height: 500px;
 }
-/* .bg-blog {
-  background: #d3dce6;
-} */
 .mainbody {
   margin-top: 3%;
   /* height: 250px; */

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card no-body style="width: 100%; height: 100%">
-      <b-tabs pills card vertical nav-wrapper-class="col-2">
+      <b-tabs pills card vertical nav-wrapper-class="col-2" style="background-color: white">
         <b-tab disabled>
           <template #title>
             <br/>
@@ -81,6 +81,7 @@ export default {
 </script>
 
 <style scoped>
+
 .level-title {
   font-size: large;
   vertical-align: middle;

@@ -1,6 +1,6 @@
 <template>
   <div class="feedfack">
-    <div style="margin: 20px">当前共有{{ num }}条待处理反馈信息</div>
+    <div style="margin: 20px">当前共有{{ num }}条被驳回反馈信息</div>
     <div style="margin-bottom: 20px">
       <el-table :data="tableData" height="600" border style="width: 100%">
         <el-table-column fixed prop="appealType" label="反馈类型" width="80">
@@ -17,23 +17,14 @@
         </el-table-column>
         <el-table-column prop="appealState" label="当前状态" width="85">
         </el-table-column>
-
-        <el-table-column fixed="right" label="操作" width="100">
+        <!-- <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
-            <el-button
-              @click="fbaction(scope.row.appealId, '通过')"
-              type="text"
-              size="small"
+            <el-button @click="handleClick(scope.row)" type="text" size="small"
               >通过</el-button
             >
-            <el-button
-              @click="fbaction(scope.row.appealId, '不通过')"
-              type="text"
-              size="small"
-              >驳回</el-button
-            >
+            <el-button type="text" size="small">驳回</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
   </div>
@@ -53,7 +44,7 @@ export default {
           // accountNickname: "66",
           appealTypeId: "0003",
           appealMessage: "aaaa",
-          appealState: "待处理",
+          appealState: "被驳回",
         },
       ],
     };
@@ -62,34 +53,10 @@ export default {
     this.getappeal();
   },
   methods: {
-    alertmsg(msg, type) {
-      this.$message({
-        message: msg,
-        type: type,
-      });
-    },
-    fbaction(appealId, action) {
-      // alert(appealId + " " + action);
-
-      this.$axios
-        .post("/appeal/action", {
-          appealId: appealId,
-          action: action,
-        })
-        .then((res) => {
-          if (res.data.code === 0) this.alertmsg("操作成功", "success");
-          else if (res.data.code === 1) this.alertmsg("操作失败", "warning");
-        })
-        .catch(() => {
-          this.alerterror();
-        });
-
-      this.getappeal();
-    },
     getappeal() {
       this.$axios
         .post("/appeal/all", {
-          state: "待处理",
+          state: "被驳回",
         })
         .then((res) => {
           if (res.data.code === 0) {

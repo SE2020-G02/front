@@ -2,8 +2,9 @@
   <div class="usermanage bg-rect-background">
     <b-card no-body>
       <b-tabs card>
-        <b-tab title="反馈信息"><feedback></feedback></b-tab>
-        <b-tab title="用户申诉"><userappeal></userappeal></b-tab>
+        <b-tab title="待处理"><feedback></feedback></b-tab>
+        <b-tab title="已解决"><feedbackyes></feedbackyes></b-tab>
+        <b-tab title="被驳回"><feedbackno></feedbackno></b-tab>
       </b-tabs>
     </b-card>
   </div>
@@ -11,12 +12,14 @@
 
 <script>
 import feedback from "../../components/admin/feedback.vue";
-import userappeal from "../../components/admin/userappeal.vue";
+import feedbackyes from "../../components/admin/feedbackyes.vue";
+import feedbackno from "../../components/admin/feedbackno.vue";
 
 export default {
   components: {
     feedback,
-    userappeal,
+    feedbackyes,
+    feedbackno,
   },
 };
 </script>

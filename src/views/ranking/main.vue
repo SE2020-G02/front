@@ -10,7 +10,7 @@
 
     <div class="ranklist">
       <el-table
-          height="750"
+          height="750px"
           :data="
           tableData.filter(
             (data) =>

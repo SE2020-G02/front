@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="bg"></div>
     <el-row>
       <el-col :span="5">
         <div style="height: 700px; border-right: #999999 solid 1px">
@@ -12,7 +13,7 @@
           <div class="problem-level info">题目难度：{{ level }}</div>
           <hr class="hr-line" />
           <div class="info">题号：{{ problemid }}</div>
-          <div class="info">
+          <div class="info" style="margin-top: 3%">
             {{ problem_info }}
           </div>
           <div align="center" style="margin: 80px; color: #0079fe">
@@ -159,6 +160,17 @@ export default {
 </script>
 
 <style>
+
+.bg {
+  left: 0;
+  top: 65px;
+  position: absolute;
+  width: 100%;
+  height: 90%;
+  background-color: white;
+  z-index: -1;
+}
+
 .hr-line {
   margin-left: 10%;
   width: 80%;
@@ -167,6 +179,7 @@ export default {
 .subtitle {
   color: #999999;
   margin-left: 10%;
+  margin-top: 8%;
 }
 
 .right-title {
@@ -190,6 +203,7 @@ export default {
 }
 
 .problem-level {
+  margin-top: 8%;
   color: #999999;
 }
 

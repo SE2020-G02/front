@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card no-body>
-      <b-tabs pills card>
+      <b-tabs pills card style="background-color: white">
         <b-tabs pills card vertical>
           <div v-if="this.tbl === 1">
             <b-tabs pills card vertical nav-wrapper-class="col-2">

@@ -1,6 +1,6 @@
 <template>
   <el-table
-      height="1000"
+      height="900"
       :data="table.filter(data =>!search ||data.roomId.toString().includes(search))"
       class="room-table">
     <el-table-column label="房间号" prop="roomId"></el-table-column>
@@ -65,7 +65,7 @@ export default {
     enterRoom(theRoomId, creator, problemId, startTime, runningTime) {
       if (this.goroom === '开始练习') {
         localStorage.setItem('problemid', problemId)
-        localStorage.setItem('ispractice', 1)
+        localStorage.setItem('ispractice', '1')
         this.$router.push('question')
       } else {
         localStorage.setItem("roomid", theRoomId);

@@ -1,5 +1,6 @@
 <template>
   <div class="changepwd">
+    <div class="bg"></div>
     <div style="margin-top: 5%; font-size: 18px">Modify Password</div>
     <div style="font-size: 32px; margin-top: 1%; margin-bottom: 3%">
       修改密码
@@ -37,7 +38,7 @@
       :size="buttonSize"
       type="primary"
       shape="circle"
-      style="margin-top: 2%; margin-bottom: 6%; width: 15%"
+      style="margin-top: 2%; margin-bottom: 15%; width: 15%"
       @click="changePwd"
       >提交
     </Button>
@@ -98,10 +99,23 @@ export default {
 </script>
 
 <style>
+
+.bg {
+  left: 0;
+  top: 65px;
+  position: absolute;
+  width: 100%;
+  height: 90%;
+  background-color: white;
+  z-index: -1;
+}
+
 .changepwd {
   text-align: center;
 }
+
 .inputchangepwd {
   margin: 2%;
 }
+
 </style>
